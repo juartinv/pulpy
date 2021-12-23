@@ -7,8 +7,11 @@ This work is a collaboration between University of Vienna and TU Berlin.
 ## Authors
 
 Juan Vanerio
+
 Lily Hügerich
+
 Stefan Schmid
+
 
 <!-- If you use this software in a publication, please cite it as:
 
