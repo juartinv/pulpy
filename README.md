@@ -1,4 +1,4 @@
-# Distributed System Simple Simulator
+# PulPy - Distributed System Simple Simulator
 
 Simple python simulation tool for distributed systems.
 
