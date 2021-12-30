@@ -1,0 +1,1258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>pulpy.machines API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pulpy.machines</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import random
+import simpy
+from pulpy.system import *
+from pulpy.fun import *
+
+class CoreMachine(ContextUser, CoreRequestSource, object):
+    &#34;&#34;&#34;
+    Parent class of all machines.
+    Machines can be a variety of abstracted distributed entities.
+    &#34;&#34;&#34;
+    def __init__(self,context):
+        ContextUser.__init__(self, context)
+        CoreRequestSource.__init__(self)
+        self.working_set = []
+        self.last_visit  = 0
+        self.next_event = None
+
+        self.action = self.env.process(self.run())
+
+        # space, processing and bandwidth are the main characteristics.
+        # although they can be ommited, at least one must be defined.
+
+        self.bandwidth = 0           # Bandwidth requirements
+        self.capacity = 0            # RAM or disk space requirements
+        self.proc_power = 0          # Processing power
+
+    def send_request(self, dst, request):
+        dst.add_request(request)
+
+    def _admission_control(self, request):
+        assert isinstance(request, Request)
+        return Result(0)
+
+    def add_request(self,request):
+        raise NotImplementedError
+
+    def get_concurrency(self):
+        return len(self.working_set)
+
+    def update_visit_time(self):
+        delta_visit = self.env.now - self.last_visit
+        self.last_visit = self.env.now
+        return delta_visit
+
+    def process_elapsed_time(self, verbose = False):
+        ini_r = self.get_concurrency()
+        delta_visit = self.update_visit_time() # time since last visit
+        self.working_set = self.process_requests(delta_visit, verbose = verbose)
+        if not self.get_concurrency():
+            self.next_event = None
+
+    def compute_next_expected_completition_time(self):
+        # This is processing specific.
+        raise NotImplementedError
+
+    def update_next_event(self):
+        if not self.get_concurrency():
+            self.next_event = None
+            return
+
+        next_expected_completition_time = self.compute_next_expected_completition_time()
+        if next_expected_completition_time &lt; 1e-9:
+            next_expected_completition_time = 1e-9
+
+        self.next_event = self.env.timeout(next_expected_completition_time)
+
+    def process_requests(self, delta_visit, verbose = False):
+        raise NotImplementedError
+
+    def run(self):
+        #This process controls time until next service completition.
+        while True:
+            try:
+                if not self.next_event:
+                    yield self.env.timeout(1e6)
+                    continue
+
+                yield self.next_event
+                self.process_elapsed_time(verbose = True)
+
+            except simpy.Interrupt:
+                pass
+
+            self.update_next_event()
+
+
+class Machine(Observable, CoreMachine, object):
+    &#34;&#34;&#34;
+     A simple processor sharing server class.
+     &#34;&#34;&#34;
+    def __init__(self, name, context, bandwidth = 10000.0, proc_power = 10000):
+        CoreMachine.__init__(self, context)
+        self.bandwidth = bandwidth        # bandwidth capacity
+        self.proc_power = proc_power      # Processing power
+
+        Observable.__init__(self, name)
+        self.add_observer(self.monitor)
+
+        # function used for processing disicplines.
+        self._process = self.processor_sharing_process
+        # self._process = self.fifo_process
+
+    def add_request(self,request):
+        admitted = self._admission_control(request)
+        if not admitted:
+            return admitted  # a Result object
+
+        self.process_elapsed_time()
+        self.working_set.append(request)
+        self.action.interrupt()   #FIXME??
+
+        t = Result(0)
+        trep = Report(None, {&#34;hit&#34;: 1})
+        self.notify_observer(trep)
+
+        return t
+
+    def processor_sharing_process(self, delta_visit, work_quota = 0, size_quota = 0 ):
+        # Processor sharing discipline
+
+        def _distribute_quota(resource, quota, to_update):
+            if not quota:
+                return
+            individual_quota =  quota
+            margins = {req:0 for req in to_update}
+            while (individual_quota &gt; 0) and to_update:
+                # positive margins can be redistributed.
+                individual_quota =  quota / len(to_update)
+                margins = {req: req.process(resource, delta_visit, individual_quota,
+                           wanted = -margins[req]) for req in to_update }
+                to_update = [req for req,v in margins.items() if v &lt; 0]
+                quota = sum([v for _,v in margins.items() if v &gt; 0])
+
+
+        if not self.get_concurrency():  # if no active requests return
+            return self.working_set
+
+        # Process work
+        _distribute_quota(&#34;work&#34;, work_quota, self.working_set)
+
+        # Now process sizes according to lifecycles!
+        to_update = [req for req in self.working_set if req.may_process_size()]
+        if len(to_update):
+            _distribute_quota(&#34;space&#34;, size_quota, to_update)
+
+        incomplete = list(filter( lambda x:x.is_alive(), self.working_set))
+        return incomplete
+
+
+    def fifo_process(self, delta_visit, work_quota = 0, size_quota = 0 ):
+        # fifo processing
+        if not self.get_concurrency():  # if no active requests return
+            return self.working_set
+
+
+        for req in self.working_set:
+            work_quota = req.process(&#34;work&#34;, delta_visit, work_quota)
+            if req.may_process_size():
+                size_quota = req.process(&#34;work&#34;, delta_visit, size_quota)
+            if work_quota &lt;= 0 and size_quota &lt;= 0:
+                break
+
+        # incomplete = list(filter( lambda x:x.remaining_work &gt; 0 or x.remaining_size &gt; 0, self.working_set) )  #FIXME
+        incomplete = list(filter( lambda x:x.is_alive(), self.working_set))
+        return incomplete
+
+    def process_requests(self, delta_visit, verbose = False):
+
+        incomplete = self.working_set
+        if self.get_concurrency():  # if there is at least one active request
+            required_processing = min(self.proc_power, sum([req.cli_proc_rate for req in self.working_set]))
+            work_quota = delta_visit*required_processing
+
+            required_processing = min(self.bandwidth, sum([req.cli_bw for req in self.working_set]))
+            size_quota = delta_visit*required_processing
+            incomplete = self._process(delta_visit, work_quota, size_quota)
+
+            t = Result(0)
+            self.notify_observer(Report(None, {&#34;work&#34;:work_quota, &#34;space&#34;: size_quota}))
+
+        return incomplete
+
+    def compute_next_expected_completition_time(self):
+        nominal_power = min(self.proc_power, sum([req.cli_proc_rate for req in self.working_set])) / self.get_concurrency()
+        expected_completition_times = [req.estimate_time_to_completition(proc_rate_cap = nominal_power) for req in self.working_set]
+        next_expected_completition_time = min(expected_completition_times)
+
+        nominal_bw = min(self.bandwidth, sum([req.cli_bw for req in self.working_set])) / self.get_concurrency()
+        expected_completition_times = [req.estimate_remaining_transfer_time(bw_cap = nominal_bw) for req in self.working_set]
+        next_expected_completition_time_transfer = min(expected_completition_times)
+
+        if not next_expected_completition_time:
+            return next_expected_completition_time_transfer
+        return min(next_expected_completition_time, next_expected_completition_time_transfer)
+
+
+class Constrained_Machine(Machine):
+    &#34;&#34;&#34;
+    A cpu, space and bandwidth-constrained machine.
+    This machine can only accept and process requests to items already known on its Memory.
+     Similar to the machine class, they also have finite processing power and bandwidth.
+     Finally there is also a hard limit on concurrency (size of the working set),
+     which is the usual case in many operative systems.
+     &#34;&#34;&#34;
+
+    def __init__(self, name, context,  bandwidth = 1.0,  hard_limit_concurrency = 20, space_capacity = 10,):
+
+        super().__init__( name, context, bandwidth)
+        self.memory = []
+        self.capacity = space_capacity
+        self.remaining_capacity = space_capacity
+        self.hard_limit_concurrency = hard_limit_concurrency
+
+    def _admission_control(self, request):
+        super()._admission_control(request)
+
+        if self.get_concurrency() &gt;= self.hard_limit_concurrency:
+            t = Result(1, reason = &#34;Connection pool depleted&#34;)   #Connection pool depleted.
+            trep = Report(None, {&#34;depleted_pool&#34;: 1})
+            self.notify_observer(trep)
+            return t
+
+        if not (request.item in self.memory):
+            t = Result(2, reason = &#34;Item not in memory&#34;)   #Item not in memory
+            trep = Report(None, {&#34;item_not_in_memory&#34;: 1})
+            self.notify_observer(trep)
+            return t
+
+        return Result(0)
+
+    def get_memory(self):
+        return self.memory
+
+    def fetch(self, item):   # what should we return?
+        if item in self.memory:
+            return Result(3, reason = &#34;Item already in Memory&#34;)
+
+        if self.remaining_capacity &gt;= item.work:
+            self.memory.append(item)
+            self.remaining_capacity -= item.work
+            return Result(0)
+        else:
+            raise Exception(&#34;FetchError: Not enough space to store item.&#34;)
+            # return Result(4, reason = &#34;FetchError: Not enough space to store item.&#34;)
+
+    def evict(self, item):   # what should we return?
+        if item not in self.memory:
+            # raise Exception(&#34;EvictionError: Item not in memory&#34;)
+            t = Result(2, reason = &#34;Item not in memory&#34;)   #Item not in memory
+            trep = Report(None, {&#34;item_not_in_memory&#34;: 1})
+            self.notify_observer(trep)
+            return t
+        self.memory.remove(item)
+        self.remaining_capacity += item.work
+        return Result(0)
+
+
+class Router(Observable, object):
+    &#34;&#34;&#34;
+    The balancer: receives requests and distributes them.
+    &#34;&#34;&#34;
+
+    def __init__(self, context, machines, name):
+        super().__init__(name)
+        self.context = context
+        self.env = context.env
+        self.monitor=context.monitor
+        self.add_observer(self.monitor)
+        self.name = name
+        self.machines = machines
+
+        #stats
+        self.stats = {d:0 for d in machines}
+
+    def add_request(self, request):
+        self.route_request(request)
+
+    def route_request(self, request):
+        m = random.choices(self.machines)[0]
+#         print (&#34;Sending request &#34; , request.item.name, &#34; to cache &#34;, cache.name, &#34; with queue length&#34;, cache.get_concurrency())
+        self.stats[m] += 1
+        res = m.add_request(request)
+
+    def push_alloc_map(self, alloc_map):
+        self.alloc_map = alloc_map
+
+
+class RouterLeastCongested(Router):
+    &#34;&#34;&#34;
+     The balancer: receives requests and distributes them. This one is aware of the object allocation in caches.
+     &#34;&#34;&#34;
+    def __init__(self, context, machines, name, alloc_map):
+        # Not the bottleneck!
+        self.alloc_map = alloc_map
+        super().__init__(context, machines, name)
+
+    def route_request(self, request):
+        a = self.alloc_map.alloc_o
+        candidate_targets = []
+        if request.item in a.keys():
+            candidate_targets = self.alloc_map.alloc_o[request.item]
+
+        if not candidate_targets:
+            request.finish()  # We don&#39;t know what to do with this.
+            t = Result(10, &#34;Dropped because we don&#39;t know what to do with this.&#34;)
+            trep = Report(None, {&#34;dropped&#34;: 1})
+            self.notify_observer(trep)
+            return
+
+        concurrency = [m.get_concurrency() for m in candidate_targets]
+        machine = [m for m in candidate_targets if m.get_concurrency() == min(concurrency)][0]
+        res = machine.add_request(request)
+        self.stats[machine] += 1</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pulpy.machines.Constrained_Machine"><code class="flex name class">
+<span>class <span class="ident">Constrained_Machine</span></span>
+<span>(</span><span>name, context, bandwidth=1.0, hard_limit_concurrency=20, space_capacity=10)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A cpu, space and bandwidth-constrained machine.
+This machine can only accept and process requests to items already known on its Memory.
+Similar to the machine class, they also have finite processing power and bandwidth.
+Finally there is also a hard limit on concurrency (size of the working set),
+which is the usual case in many operative systems.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Constrained_Machine(Machine):
+    &#34;&#34;&#34;
+    A cpu, space and bandwidth-constrained machine.
+    This machine can only accept and process requests to items already known on its Memory.
+     Similar to the machine class, they also have finite processing power and bandwidth.
+     Finally there is also a hard limit on concurrency (size of the working set),
+     which is the usual case in many operative systems.
+     &#34;&#34;&#34;
+
+    def __init__(self, name, context,  bandwidth = 1.0,  hard_limit_concurrency = 20, space_capacity = 10,):
+
+        super().__init__( name, context, bandwidth)
+        self.memory = []
+        self.capacity = space_capacity
+        self.remaining_capacity = space_capacity
+        self.hard_limit_concurrency = hard_limit_concurrency
+
+    def _admission_control(self, request):
+        super()._admission_control(request)
+
+        if self.get_concurrency() &gt;= self.hard_limit_concurrency:
+            t = Result(1, reason = &#34;Connection pool depleted&#34;)   #Connection pool depleted.
+            trep = Report(None, {&#34;depleted_pool&#34;: 1})
+            self.notify_observer(trep)
+            return t
+
+        if not (request.item in self.memory):
+            t = Result(2, reason = &#34;Item not in memory&#34;)   #Item not in memory
+            trep = Report(None, {&#34;item_not_in_memory&#34;: 1})
+            self.notify_observer(trep)
+            return t
+
+        return Result(0)
+
+    def get_memory(self):
+        return self.memory
+
+    def fetch(self, item):   # what should we return?
+        if item in self.memory:
+            return Result(3, reason = &#34;Item already in Memory&#34;)
+
+        if self.remaining_capacity &gt;= item.work:
+            self.memory.append(item)
+            self.remaining_capacity -= item.work
+            return Result(0)
+        else:
+            raise Exception(&#34;FetchError: Not enough space to store item.&#34;)
+            # return Result(4, reason = &#34;FetchError: Not enough space to store item.&#34;)
+
+    def evict(self, item):   # what should we return?
+        if item not in self.memory:
+            # raise Exception(&#34;EvictionError: Item not in memory&#34;)
+            t = Result(2, reason = &#34;Item not in memory&#34;)   #Item not in memory
+            trep = Report(None, {&#34;item_not_in_memory&#34;: 1})
+            self.notify_observer(trep)
+            return t
+        self.memory.remove(item)
+        self.remaining_capacity += item.work
+        return Result(0)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pulpy.machines.Machine" href="#pulpy.machines.Machine">Machine</a></li>
+<li><a title="pulpy.interfaces.Observable" href="interfaces.html#pulpy.interfaces.Observable">Observable</a></li>
+<li><a title="pulpy.machines.CoreMachine" href="#pulpy.machines.CoreMachine">CoreMachine</a></li>
+<li><a title="pulpy.interfaces.ContextUser" href="interfaces.html#pulpy.interfaces.ContextUser">ContextUser</a></li>
+<li><a title="pulpy.system.CoreRequestSource" href="system.html#pulpy.system.CoreRequestSource">CoreRequestSource</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pulpy.machines.Constrained_Machine.evict"><code class="name flex">
+<span>def <span class="ident">evict</span></span>(<span>self, item)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def evict(self, item):   # what should we return?
+    if item not in self.memory:
+        # raise Exception(&#34;EvictionError: Item not in memory&#34;)
+        t = Result(2, reason = &#34;Item not in memory&#34;)   #Item not in memory
+        trep = Report(None, {&#34;item_not_in_memory&#34;: 1})
+        self.notify_observer(trep)
+        return t
+    self.memory.remove(item)
+    self.remaining_capacity += item.work
+    return Result(0)</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.Constrained_Machine.fetch"><code class="name flex">
+<span>def <span class="ident">fetch</span></span>(<span>self, item)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fetch(self, item):   # what should we return?
+    if item in self.memory:
+        return Result(3, reason = &#34;Item already in Memory&#34;)
+
+    if self.remaining_capacity &gt;= item.work:
+        self.memory.append(item)
+        self.remaining_capacity -= item.work
+        return Result(0)
+    else:
+        raise Exception(&#34;FetchError: Not enough space to store item.&#34;)
+        # return Result(4, reason = &#34;FetchError: Not enough space to store item.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.Constrained_Machine.get_memory"><code class="name flex">
+<span>def <span class="ident">get_memory</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_memory(self):
+    return self.memory</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pulpy.machines.CoreMachine"><code class="flex name class">
+<span>class <span class="ident">CoreMachine</span></span>
+<span>(</span><span>context)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parent class of all machines.
+Machines can be a variety of abstracted distributed entities.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CoreMachine(ContextUser, CoreRequestSource, object):
+    &#34;&#34;&#34;
+    Parent class of all machines.
+    Machines can be a variety of abstracted distributed entities.
+    &#34;&#34;&#34;
+    def __init__(self,context):
+        ContextUser.__init__(self, context)
+        CoreRequestSource.__init__(self)
+        self.working_set = []
+        self.last_visit  = 0
+        self.next_event = None
+
+        self.action = self.env.process(self.run())
+
+        # space, processing and bandwidth are the main characteristics.
+        # although they can be ommited, at least one must be defined.
+
+        self.bandwidth = 0           # Bandwidth requirements
+        self.capacity = 0            # RAM or disk space requirements
+        self.proc_power = 0          # Processing power
+
+    def send_request(self, dst, request):
+        dst.add_request(request)
+
+    def _admission_control(self, request):
+        assert isinstance(request, Request)
+        return Result(0)
+
+    def add_request(self,request):
+        raise NotImplementedError
+
+    def get_concurrency(self):
+        return len(self.working_set)
+
+    def update_visit_time(self):
+        delta_visit = self.env.now - self.last_visit
+        self.last_visit = self.env.now
+        return delta_visit
+
+    def process_elapsed_time(self, verbose = False):
+        ini_r = self.get_concurrency()
+        delta_visit = self.update_visit_time() # time since last visit
+        self.working_set = self.process_requests(delta_visit, verbose = verbose)
+        if not self.get_concurrency():
+            self.next_event = None
+
+    def compute_next_expected_completition_time(self):
+        # This is processing specific.
+        raise NotImplementedError
+
+    def update_next_event(self):
+        if not self.get_concurrency():
+            self.next_event = None
+            return
+
+        next_expected_completition_time = self.compute_next_expected_completition_time()
+        if next_expected_completition_time &lt; 1e-9:
+            next_expected_completition_time = 1e-9
+
+        self.next_event = self.env.timeout(next_expected_completition_time)
+
+    def process_requests(self, delta_visit, verbose = False):
+        raise NotImplementedError
+
+    def run(self):
+        #This process controls time until next service completition.
+        while True:
+            try:
+                if not self.next_event:
+                    yield self.env.timeout(1e6)
+                    continue
+
+                yield self.next_event
+                self.process_elapsed_time(verbose = True)
+
+            except simpy.Interrupt:
+                pass
+
+            self.update_next_event()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pulpy.interfaces.ContextUser" href="interfaces.html#pulpy.interfaces.ContextUser">ContextUser</a></li>
+<li><a title="pulpy.system.CoreRequestSource" href="system.html#pulpy.system.CoreRequestSource">CoreRequestSource</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pulpy.machines.Machine" href="#pulpy.machines.Machine">Machine</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pulpy.machines.CoreMachine.add_request"><code class="name flex">
+<span>def <span class="ident">add_request</span></span>(<span>self, request)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_request(self,request):
+    raise NotImplementedError</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.CoreMachine.compute_next_expected_completition_time"><code class="name flex">
+<span>def <span class="ident">compute_next_expected_completition_time</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compute_next_expected_completition_time(self):
+    # This is processing specific.
+    raise NotImplementedError</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.CoreMachine.get_concurrency"><code class="name flex">
+<span>def <span class="ident">get_concurrency</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_concurrency(self):
+    return len(self.working_set)</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.CoreMachine.process_elapsed_time"><code class="name flex">
+<span>def <span class="ident">process_elapsed_time</span></span>(<span>self, verbose=False)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def process_elapsed_time(self, verbose = False):
+    ini_r = self.get_concurrency()
+    delta_visit = self.update_visit_time() # time since last visit
+    self.working_set = self.process_requests(delta_visit, verbose = verbose)
+    if not self.get_concurrency():
+        self.next_event = None</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.CoreMachine.process_requests"><code class="name flex">
+<span>def <span class="ident">process_requests</span></span>(<span>self, delta_visit, verbose=False)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def process_requests(self, delta_visit, verbose = False):
+    raise NotImplementedError</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.CoreMachine.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self):
+    #This process controls time until next service completition.
+    while True:
+        try:
+            if not self.next_event:
+                yield self.env.timeout(1e6)
+                continue
+
+            yield self.next_event
+            self.process_elapsed_time(verbose = True)
+
+        except simpy.Interrupt:
+            pass
+
+        self.update_next_event()</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.CoreMachine.send_request"><code class="name flex">
+<span>def <span class="ident">send_request</span></span>(<span>self, dst, request)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_request(self, dst, request):
+    dst.add_request(request)</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.CoreMachine.update_next_event"><code class="name flex">
+<span>def <span class="ident">update_next_event</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_next_event(self):
+    if not self.get_concurrency():
+        self.next_event = None
+        return
+
+    next_expected_completition_time = self.compute_next_expected_completition_time()
+    if next_expected_completition_time &lt; 1e-9:
+        next_expected_completition_time = 1e-9
+
+    self.next_event = self.env.timeout(next_expected_completition_time)</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.CoreMachine.update_visit_time"><code class="name flex">
+<span>def <span class="ident">update_visit_time</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_visit_time(self):
+    delta_visit = self.env.now - self.last_visit
+    self.last_visit = self.env.now
+    return delta_visit</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pulpy.machines.Machine"><code class="flex name class">
+<span>class <span class="ident">Machine</span></span>
+<span>(</span><span>name, context, bandwidth=10000.0, proc_power=10000)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A simple processor sharing server class.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Machine(Observable, CoreMachine, object):
+    &#34;&#34;&#34;
+     A simple processor sharing server class.
+     &#34;&#34;&#34;
+    def __init__(self, name, context, bandwidth = 10000.0, proc_power = 10000):
+        CoreMachine.__init__(self, context)
+        self.bandwidth = bandwidth        # bandwidth capacity
+        self.proc_power = proc_power      # Processing power
+
+        Observable.__init__(self, name)
+        self.add_observer(self.monitor)
+
+        # function used for processing disicplines.
+        self._process = self.processor_sharing_process
+        # self._process = self.fifo_process
+
+    def add_request(self,request):
+        admitted = self._admission_control(request)
+        if not admitted:
+            return admitted  # a Result object
+
+        self.process_elapsed_time()
+        self.working_set.append(request)
+        self.action.interrupt()   #FIXME??
+
+        t = Result(0)
+        trep = Report(None, {&#34;hit&#34;: 1})
+        self.notify_observer(trep)
+
+        return t
+
+    def processor_sharing_process(self, delta_visit, work_quota = 0, size_quota = 0 ):
+        # Processor sharing discipline
+
+        def _distribute_quota(resource, quota, to_update):
+            if not quota:
+                return
+            individual_quota =  quota
+            margins = {req:0 for req in to_update}
+            while (individual_quota &gt; 0) and to_update:
+                # positive margins can be redistributed.
+                individual_quota =  quota / len(to_update)
+                margins = {req: req.process(resource, delta_visit, individual_quota,
+                           wanted = -margins[req]) for req in to_update }
+                to_update = [req for req,v in margins.items() if v &lt; 0]
+                quota = sum([v for _,v in margins.items() if v &gt; 0])
+
+
+        if not self.get_concurrency():  # if no active requests return
+            return self.working_set
+
+        # Process work
+        _distribute_quota(&#34;work&#34;, work_quota, self.working_set)
+
+        # Now process sizes according to lifecycles!
+        to_update = [req for req in self.working_set if req.may_process_size()]
+        if len(to_update):
+            _distribute_quota(&#34;space&#34;, size_quota, to_update)
+
+        incomplete = list(filter( lambda x:x.is_alive(), self.working_set))
+        return incomplete
+
+
+    def fifo_process(self, delta_visit, work_quota = 0, size_quota = 0 ):
+        # fifo processing
+        if not self.get_concurrency():  # if no active requests return
+            return self.working_set
+
+
+        for req in self.working_set:
+            work_quota = req.process(&#34;work&#34;, delta_visit, work_quota)
+            if req.may_process_size():
+                size_quota = req.process(&#34;work&#34;, delta_visit, size_quota)
+            if work_quota &lt;= 0 and size_quota &lt;= 0:
+                break
+
+        # incomplete = list(filter( lambda x:x.remaining_work &gt; 0 or x.remaining_size &gt; 0, self.working_set) )  #FIXME
+        incomplete = list(filter( lambda x:x.is_alive(), self.working_set))
+        return incomplete
+
+    def process_requests(self, delta_visit, verbose = False):
+
+        incomplete = self.working_set
+        if self.get_concurrency():  # if there is at least one active request
+            required_processing = min(self.proc_power, sum([req.cli_proc_rate for req in self.working_set]))
+            work_quota = delta_visit*required_processing
+
+            required_processing = min(self.bandwidth, sum([req.cli_bw for req in self.working_set]))
+            size_quota = delta_visit*required_processing
+            incomplete = self._process(delta_visit, work_quota, size_quota)
+
+            t = Result(0)
+            self.notify_observer(Report(None, {&#34;work&#34;:work_quota, &#34;space&#34;: size_quota}))
+
+        return incomplete
+
+    def compute_next_expected_completition_time(self):
+        nominal_power = min(self.proc_power, sum([req.cli_proc_rate for req in self.working_set])) / self.get_concurrency()
+        expected_completition_times = [req.estimate_time_to_completition(proc_rate_cap = nominal_power) for req in self.working_set]
+        next_expected_completition_time = min(expected_completition_times)
+
+        nominal_bw = min(self.bandwidth, sum([req.cli_bw for req in self.working_set])) / self.get_concurrency()
+        expected_completition_times = [req.estimate_remaining_transfer_time(bw_cap = nominal_bw) for req in self.working_set]
+        next_expected_completition_time_transfer = min(expected_completition_times)
+
+        if not next_expected_completition_time:
+            return next_expected_completition_time_transfer
+        return min(next_expected_completition_time, next_expected_completition_time_transfer)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pulpy.interfaces.Observable" href="interfaces.html#pulpy.interfaces.Observable">Observable</a></li>
+<li><a title="pulpy.machines.CoreMachine" href="#pulpy.machines.CoreMachine">CoreMachine</a></li>
+<li><a title="pulpy.interfaces.ContextUser" href="interfaces.html#pulpy.interfaces.ContextUser">ContextUser</a></li>
+<li><a title="pulpy.system.CoreRequestSource" href="system.html#pulpy.system.CoreRequestSource">CoreRequestSource</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pulpy.machines.Constrained_Machine" href="#pulpy.machines.Constrained_Machine">Constrained_Machine</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pulpy.machines.Machine.add_request"><code class="name flex">
+<span>def <span class="ident">add_request</span></span>(<span>self, request)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_request(self,request):
+    admitted = self._admission_control(request)
+    if not admitted:
+        return admitted  # a Result object
+
+    self.process_elapsed_time()
+    self.working_set.append(request)
+    self.action.interrupt()   #FIXME??
+
+    t = Result(0)
+    trep = Report(None, {&#34;hit&#34;: 1})
+    self.notify_observer(trep)
+
+    return t</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.Machine.compute_next_expected_completition_time"><code class="name flex">
+<span>def <span class="ident">compute_next_expected_completition_time</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compute_next_expected_completition_time(self):
+    nominal_power = min(self.proc_power, sum([req.cli_proc_rate for req in self.working_set])) / self.get_concurrency()
+    expected_completition_times = [req.estimate_time_to_completition(proc_rate_cap = nominal_power) for req in self.working_set]
+    next_expected_completition_time = min(expected_completition_times)
+
+    nominal_bw = min(self.bandwidth, sum([req.cli_bw for req in self.working_set])) / self.get_concurrency()
+    expected_completition_times = [req.estimate_remaining_transfer_time(bw_cap = nominal_bw) for req in self.working_set]
+    next_expected_completition_time_transfer = min(expected_completition_times)
+
+    if not next_expected_completition_time:
+        return next_expected_completition_time_transfer
+    return min(next_expected_completition_time, next_expected_completition_time_transfer)</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.Machine.fifo_process"><code class="name flex">
+<span>def <span class="ident">fifo_process</span></span>(<span>self, delta_visit, work_quota=0, size_quota=0)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fifo_process(self, delta_visit, work_quota = 0, size_quota = 0 ):
+    # fifo processing
+    if not self.get_concurrency():  # if no active requests return
+        return self.working_set
+
+
+    for req in self.working_set:
+        work_quota = req.process(&#34;work&#34;, delta_visit, work_quota)
+        if req.may_process_size():
+            size_quota = req.process(&#34;work&#34;, delta_visit, size_quota)
+        if work_quota &lt;= 0 and size_quota &lt;= 0:
+            break
+
+    # incomplete = list(filter( lambda x:x.remaining_work &gt; 0 or x.remaining_size &gt; 0, self.working_set) )  #FIXME
+    incomplete = list(filter( lambda x:x.is_alive(), self.working_set))
+    return incomplete</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.Machine.process_requests"><code class="name flex">
+<span>def <span class="ident">process_requests</span></span>(<span>self, delta_visit, verbose=False)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def process_requests(self, delta_visit, verbose = False):
+
+    incomplete = self.working_set
+    if self.get_concurrency():  # if there is at least one active request
+        required_processing = min(self.proc_power, sum([req.cli_proc_rate for req in self.working_set]))
+        work_quota = delta_visit*required_processing
+
+        required_processing = min(self.bandwidth, sum([req.cli_bw for req in self.working_set]))
+        size_quota = delta_visit*required_processing
+        incomplete = self._process(delta_visit, work_quota, size_quota)
+
+        t = Result(0)
+        self.notify_observer(Report(None, {&#34;work&#34;:work_quota, &#34;space&#34;: size_quota}))
+
+    return incomplete</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.Machine.processor_sharing_process"><code class="name flex">
+<span>def <span class="ident">processor_sharing_process</span></span>(<span>self, delta_visit, work_quota=0, size_quota=0)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def processor_sharing_process(self, delta_visit, work_quota = 0, size_quota = 0 ):
+    # Processor sharing discipline
+
+    def _distribute_quota(resource, quota, to_update):
+        if not quota:
+            return
+        individual_quota =  quota
+        margins = {req:0 for req in to_update}
+        while (individual_quota &gt; 0) and to_update:
+            # positive margins can be redistributed.
+            individual_quota =  quota / len(to_update)
+            margins = {req: req.process(resource, delta_visit, individual_quota,
+                       wanted = -margins[req]) for req in to_update }
+            to_update = [req for req,v in margins.items() if v &lt; 0]
+            quota = sum([v for _,v in margins.items() if v &gt; 0])
+
+
+    if not self.get_concurrency():  # if no active requests return
+        return self.working_set
+
+    # Process work
+    _distribute_quota(&#34;work&#34;, work_quota, self.working_set)
+
+    # Now process sizes according to lifecycles!
+    to_update = [req for req in self.working_set if req.may_process_size()]
+    if len(to_update):
+        _distribute_quota(&#34;space&#34;, size_quota, to_update)
+
+    incomplete = list(filter( lambda x:x.is_alive(), self.working_set))
+    return incomplete</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pulpy.machines.Router"><code class="flex name class">
+<span>class <span class="ident">Router</span></span>
+<span>(</span><span>context, machines, name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The balancer: receives requests and distributes them.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Router(Observable, object):
+    &#34;&#34;&#34;
+    The balancer: receives requests and distributes them.
+    &#34;&#34;&#34;
+
+    def __init__(self, context, machines, name):
+        super().__init__(name)
+        self.context = context
+        self.env = context.env
+        self.monitor=context.monitor
+        self.add_observer(self.monitor)
+        self.name = name
+        self.machines = machines
+
+        #stats
+        self.stats = {d:0 for d in machines}
+
+    def add_request(self, request):
+        self.route_request(request)
+
+    def route_request(self, request):
+        m = random.choices(self.machines)[0]
+#         print (&#34;Sending request &#34; , request.item.name, &#34; to cache &#34;, cache.name, &#34; with queue length&#34;, cache.get_concurrency())
+        self.stats[m] += 1
+        res = m.add_request(request)
+
+    def push_alloc_map(self, alloc_map):
+        self.alloc_map = alloc_map</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pulpy.interfaces.Observable" href="interfaces.html#pulpy.interfaces.Observable">Observable</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pulpy.machines.RouterLeastCongested" href="#pulpy.machines.RouterLeastCongested">RouterLeastCongested</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pulpy.machines.Router.add_request"><code class="name flex">
+<span>def <span class="ident">add_request</span></span>(<span>self, request)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_request(self, request):
+    self.route_request(request)</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.Router.push_alloc_map"><code class="name flex">
+<span>def <span class="ident">push_alloc_map</span></span>(<span>self, alloc_map)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def push_alloc_map(self, alloc_map):
+    self.alloc_map = alloc_map</code></pre>
+</details>
+</dd>
+<dt id="pulpy.machines.Router.route_request"><code class="name flex">
+<span>def <span class="ident">route_request</span></span>(<span>self, request)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">    def route_request(self, request):
+        m = random.choices(self.machines)[0]
+#         print (&#34;Sending request &#34; , request.item.name, &#34; to cache &#34;, cache.name, &#34; with queue length&#34;, cache.get_concurrency())
+        self.stats[m] += 1
+        res = m.add_request(request)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pulpy.machines.RouterLeastCongested"><code class="flex name class">
+<span>class <span class="ident">RouterLeastCongested</span></span>
+<span>(</span><span>context, machines, name, alloc_map)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The balancer: receives requests and distributes them. This one is aware of the object allocation in caches.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RouterLeastCongested(Router):
+    &#34;&#34;&#34;
+     The balancer: receives requests and distributes them. This one is aware of the object allocation in caches.
+     &#34;&#34;&#34;
+    def __init__(self, context, machines, name, alloc_map):
+        # Not the bottleneck!
+        self.alloc_map = alloc_map
+        super().__init__(context, machines, name)
+
+    def route_request(self, request):
+        a = self.alloc_map.alloc_o
+        candidate_targets = []
+        if request.item in a.keys():
+            candidate_targets = self.alloc_map.alloc_o[request.item]
+
+        if not candidate_targets:
+            request.finish()  # We don&#39;t know what to do with this.
+            t = Result(10, &#34;Dropped because we don&#39;t know what to do with this.&#34;)
+            trep = Report(None, {&#34;dropped&#34;: 1})
+            self.notify_observer(trep)
+            return
+
+        concurrency = [m.get_concurrency() for m in candidate_targets]
+        machine = [m for m in candidate_targets if m.get_concurrency() == min(concurrency)][0]
+        res = machine.add_request(request)
+        self.stats[machine] += 1</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pulpy.machines.Router" href="#pulpy.machines.Router">Router</a></li>
+<li><a title="pulpy.interfaces.Observable" href="interfaces.html#pulpy.interfaces.Observable">Observable</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pulpy.machines.RouterLeastCongested.route_request"><code class="name flex">
+<span>def <span class="ident">route_request</span></span>(<span>self, request)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def route_request(self, request):
+    a = self.alloc_map.alloc_o
+    candidate_targets = []
+    if request.item in a.keys():
+        candidate_targets = self.alloc_map.alloc_o[request.item]
+
+    if not candidate_targets:
+        request.finish()  # We don&#39;t know what to do with this.
+        t = Result(10, &#34;Dropped because we don&#39;t know what to do with this.&#34;)
+        trep = Report(None, {&#34;dropped&#34;: 1})
+        self.notify_observer(trep)
+        return
+
+    concurrency = [m.get_concurrency() for m in candidate_targets]
+    machine = [m for m in candidate_targets if m.get_concurrency() == min(concurrency)][0]
+    res = machine.add_request(request)
+    self.stats[machine] += 1</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pulpy" href="index.html">pulpy</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pulpy.machines.Constrained_Machine" href="#pulpy.machines.Constrained_Machine">Constrained_Machine</a></code></h4>
+<ul class="">
+<li><code><a title="pulpy.machines.Constrained_Machine.evict" href="#pulpy.machines.Constrained_Machine.evict">evict</a></code></li>
+<li><code><a title="pulpy.machines.Constrained_Machine.fetch" href="#pulpy.machines.Constrained_Machine.fetch">fetch</a></code></li>
+<li><code><a title="pulpy.machines.Constrained_Machine.get_memory" href="#pulpy.machines.Constrained_Machine.get_memory">get_memory</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pulpy.machines.CoreMachine" href="#pulpy.machines.CoreMachine">CoreMachine</a></code></h4>
+<ul class="">
+<li><code><a title="pulpy.machines.CoreMachine.add_request" href="#pulpy.machines.CoreMachine.add_request">add_request</a></code></li>
+<li><code><a title="pulpy.machines.CoreMachine.compute_next_expected_completition_time" href="#pulpy.machines.CoreMachine.compute_next_expected_completition_time">compute_next_expected_completition_time</a></code></li>
+<li><code><a title="pulpy.machines.CoreMachine.get_concurrency" href="#pulpy.machines.CoreMachine.get_concurrency">get_concurrency</a></code></li>
+<li><code><a title="pulpy.machines.CoreMachine.process_elapsed_time" href="#pulpy.machines.CoreMachine.process_elapsed_time">process_elapsed_time</a></code></li>
+<li><code><a title="pulpy.machines.CoreMachine.process_requests" href="#pulpy.machines.CoreMachine.process_requests">process_requests</a></code></li>
+<li><code><a title="pulpy.machines.CoreMachine.run" href="#pulpy.machines.CoreMachine.run">run</a></code></li>
+<li><code><a title="pulpy.machines.CoreMachine.send_request" href="#pulpy.machines.CoreMachine.send_request">send_request</a></code></li>
+<li><code><a title="pulpy.machines.CoreMachine.update_next_event" href="#pulpy.machines.CoreMachine.update_next_event">update_next_event</a></code></li>
+<li><code><a title="pulpy.machines.CoreMachine.update_visit_time" href="#pulpy.machines.CoreMachine.update_visit_time">update_visit_time</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pulpy.machines.Machine" href="#pulpy.machines.Machine">Machine</a></code></h4>
+<ul class="">
+<li><code><a title="pulpy.machines.Machine.add_request" href="#pulpy.machines.Machine.add_request">add_request</a></code></li>
+<li><code><a title="pulpy.machines.Machine.compute_next_expected_completition_time" href="#pulpy.machines.Machine.compute_next_expected_completition_time">compute_next_expected_completition_time</a></code></li>
+<li><code><a title="pulpy.machines.Machine.fifo_process" href="#pulpy.machines.Machine.fifo_process">fifo_process</a></code></li>
+<li><code><a title="pulpy.machines.Machine.process_requests" href="#pulpy.machines.Machine.process_requests">process_requests</a></code></li>
+<li><code><a title="pulpy.machines.Machine.processor_sharing_process" href="#pulpy.machines.Machine.processor_sharing_process">processor_sharing_process</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pulpy.machines.Router" href="#pulpy.machines.Router">Router</a></code></h4>
+<ul class="">
+<li><code><a title="pulpy.machines.Router.add_request" href="#pulpy.machines.Router.add_request">add_request</a></code></li>
+<li><code><a title="pulpy.machines.Router.push_alloc_map" href="#pulpy.machines.Router.push_alloc_map">push_alloc_map</a></code></li>
+<li><code><a title="pulpy.machines.Router.route_request" href="#pulpy.machines.Router.route_request">route_request</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pulpy.machines.RouterLeastCongested" href="#pulpy.machines.RouterLeastCongested">RouterLeastCongested</a></code></h4>
+<ul class="">
+<li><code><a title="pulpy.machines.RouterLeastCongested.route_request" href="#pulpy.machines.RouterLeastCongested.route_request">route_request</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

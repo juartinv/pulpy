@@ -9,25 +9,46 @@ from pulpy.alloc import AllocationMap
 
 #utils
 def build_job_catalog(catalog_size, max_item_work = 10):
+    """
+    Initializes a catalog of potential jobs.
+    Job catalog is the size of catalog_size
+    Job names = {0, ...., catalog_size}
+    Job work random int between (1, max_item_work)
+    """
     c = Catalog()
     c.items = [Job(f"item_{name}", random.randint(1, max_item_work)) for name in range(catalog_size) ]
     return c
 
 def build_catalog(catalog_size, max_item_work = 10, max_item_size = 10):
+    """
+    Initializes a catalog of potential resource items.
+    Catalog is the size of catalog_size.
+    names = {0, ...., catalog_size}
+    Item work random int between (1, max_item_work)
+    Item size random int between (1, max_item_size)
+    """
     c = Catalog()
     c.items = [Item(f"item_{name}", random.randint(1, max_item_work), random.randint(1, max_item_work)) for name in range(catalog_size) ]
     return c
 
-
-# Generic
 class Context(object):
-    # Container for common instances rquired by other objects
+    """
+    Generic container for common instances rquired by other objects.
+    Including:
+        SimPy Environment (env)
+        Monitor
+        Catalog (Jobs of Resource Items)
+    """
     def __init__(self, env, monitor, catalog):
         self.env = env
         self.monitor = monitor
         self.catalog = catalog
 
 class CoreRequestSource(object):
+    """
+    Parent class of all Request Sources.
+    generates and sends requests.
+    """
     def __init__(self, init_n = 0):
         self.n = init_n   # request counter
 
@@ -42,6 +63,9 @@ class CoreRequestSource(object):
         return new_req
 
 class RequestSource(CoreRequestSource):
+    """
+    Sends requests according to given popularity map.
+    """
     def __init__(self,  init_n = 0, prob_map = None):
         super().__init__(init_n)
         self.prob_map = None
@@ -55,7 +79,9 @@ class RequestSource(CoreRequestSource):
         self.catalog_weights = prob_map.get_all_probabilities(as_list=True)
 
     def generate_request(self):
-        # this function is used to generate tuples (request, firing_time)
+        """
+        This function is used to generate tuples (request, firing_time).
+        """
         # just rewrite it to your convenience. Defaults to Poisson events
         # chosen accordingly to a probability map.
         if not self.prob_map:
@@ -80,7 +106,9 @@ class RequestSource(CoreRequestSource):
 
 
 class Source(ContextUser, RequestSource):
-    # Creates and emits requests
+    """
+     Creates and emits requests
+     """
     def __init__(self, context, init_n = 0, intensity = 10, weights = None):
         ContextUser.__init__(self, context)
         RequestSource.__init__(self, init_n = init_n)
@@ -94,6 +122,9 @@ class Source(ContextUser, RequestSource):
 
 
 class Monitor(Observer, object):
+    """
+    Observer Object used to monitor simulation.
+    """
     def __init__(self, env):
         self.env=env
         self.start_time=self.env.now
@@ -156,7 +187,9 @@ class Result(Token):
         return self.result == 0
 
 class Item(object):
-    # Object that can be requested by users.
+    """
+    Object that can be requested by users.
+    """
     __slots__ = ["name", "work", "size","life_cycle"]
     def __init__(self, name, work, size):
         self.name = name
@@ -168,19 +201,25 @@ class Item(object):
         #  1: simoultaneously consume work and transfer.
 
 class Content(Item):
-    # Content object (file) that can be requested by users.
+    """
+     Content object (file) that can be requested by users.
+     """
     def __init__(self, name, size):
         work = 0
         super().__init__(name, work, size)
 
 class Job(Item):
-    # Task to be executed, requested by users.
+    """
+    Task to be executed, requested by users.
+    """
     def __init__(self, name, work):
         size = 0
         super().__init__(name, work, size)
 
 class Catalog(object):
-    # Catalog of all possible items.
+    """
+     Catalog of all possible items.
+     """
     def __init__(self):
         self.items = list()
 
@@ -218,7 +257,10 @@ class Catalog(object):
             raise ValueError ("Item with name: ", item_name, " not in catalog.")
 
 class Request(object):
-    # states:
+    """
+    Request Object.
+    Can be a request for Work or Space.
+    """
     _NOT_INIT = 0
     _STARTED = 1
     _FINISHED = 2
@@ -314,7 +356,9 @@ class Request(object):
 
 
 class ProbabilityMap(object):
-    # This object augments a catalog by adding popularities.
+    """
+     This object augments a catalog by adding popularities.
+     """
     def __init__(self, catalog):
         self.catalog = catalog
         self.map = OrderedDict()
