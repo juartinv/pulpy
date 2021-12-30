@@ -121,6 +121,58 @@ class Source(ContextUser, RequestSource):
         self.update_probability_map(prob_map)
 
 
+class PeriodicSource(ContextUser, CoreRequestSource):
+    """
+     Creates and emits requests periodicly.
+     (Every x time increments request y is made)
+     """
+    def __init__(self, context, init_n = 0, intensity = 10, min_interval=3, max_interval= 10, latest_start_time=5, verbose=False):
+        ContextUser.__init__(self, context)
+        CoreRequestSource.__init__(self, init_n = init_n)
+        assert(min_interval< max_interval)
+        self.dst=None
+        self.max_interval=max_interval
+        self.min_interval=min_interval
+        self.latest_start_time=latest_start_time
+        self.verbose=verbose
+
+    def send_request(self, dst, request):
+        new_req = self.generate_request(request)
+        new_req.start()
+        dst.add_request(new_req)
+
+    def send_requests(self, dst):
+        self.dst=dst
+        for item in self.catalog.get_iterator():
+            self.env.process(PeriodicRequest(item, self, start_time=random.randint(0,self.latest_start_time), interval=random.randint(self.min_interval,self.max_interval)).run())
+        yield self.env.timeout(1e6)
+
+
+class PeriodicRequest():
+    """
+    Sends the same request every interval time starting at start time.
+    """
+    def __init__(self, item, source, start_time, interval):
+        self.item=item
+        self.source=source
+        self.start_time=start_time
+        self.interval=interval
+        if self.source.verbose:
+            print ("Starting periodic request for: ", self.item.name, " with start time ", self.start_time, " and interval of: ", self.interval)
+    def run(self):
+        if self.source.dst==None:
+            if self.source.verbose:
+                print_red("No destination to send request to.")
+            return
+
+        yield self.source.env.timeout(self.start_time)
+        while True:
+            self.source.send_request( self.source.dst, self.item)
+            if self.source.verbose:
+                print ("Sent request at time ", self.source.env.now, " for item ", self.item.name)
+            yield self.source.env.timeout(self.interval)
+        return
+
 class Monitor(Observer, object):
     """
     Observer Object used to monitor simulation.
