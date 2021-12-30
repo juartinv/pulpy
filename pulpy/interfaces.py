@@ -7,6 +7,9 @@ from pulpy.alloc import AllocationMap
 
 
 class ContextUser(object):
+    """
+    Parent of all context using objects.
+    """
     def __init__(self, context):
         self.context = context
         self.env = context.env
@@ -14,7 +17,10 @@ class ContextUser(object):
         self.catalog = context.catalog
 
 class Observer():
-    # Implements Observer pattern. Abstract class.
+    """
+    Implements Observer pattern. Abstract class.
+    """
+
     def __init__(self):
         raise NotImplementedError
 
@@ -23,6 +29,9 @@ class Observer():
         raise NotImplementedError
 
 class Observable(object):
+    """
+    Parent of object to be "observed"
+    """
     def __init__(self, name):
         self._observers = []
         self.name = name

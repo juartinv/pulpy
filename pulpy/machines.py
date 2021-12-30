@@ -4,7 +4,10 @@ from pulpy.system import *
 from pulpy.fun import *
 
 class CoreMachine(ContextUser, CoreRequestSource, object):
-
+    """
+    Parent class of all machines.
+    Machines can be a variety of abstracted distributed entities.
+    """
     def __init__(self,context):
         ContextUser.__init__(self, context)
         CoreRequestSource.__init__(self)
@@ -82,7 +85,9 @@ class CoreMachine(ContextUser, CoreRequestSource, object):
 
 
 class Machine(Observable, CoreMachine, object):
-    # A simple processor sharing server class.
+    """
+     A simple processor sharing server class.
+     """
     def __init__(self, name, context, bandwidth = 10000.0, proc_power = 10000):
         CoreMachine.__init__(self, context)
         self.bandwidth = bandwidth        # bandwidth capacity
@@ -190,11 +195,13 @@ class Machine(Observable, CoreMachine, object):
 
 
 class Constrained_Machine(Machine):
-    # A cpu, space and bandwidth-constrained machine.
-    # This machine can only accept and process requests to items already known on its Memory.
-    # Similar to the machine class, they also have finite processing power and bandwidth.
-    # Finally there is also a hard limit on concurrency (size of the working set),
-    # which is the usual case in many operative systems.
+    """
+    A cpu, space and bandwidth-constrained machine.
+    This machine can only accept and process requests to items already known on its Memory.
+     Similar to the machine class, they also have finite processing power and bandwidth.
+     Finally there is also a hard limit on concurrency (size of the working set),
+     which is the usual case in many operative systems.
+     """
 
     def __init__(self, name, context,  bandwidth = 1.0,  hard_limit_concurrency = 20, space_capacity = 10,):
 
@@ -249,7 +256,10 @@ class Constrained_Machine(Machine):
 
 
 class Router(Observable, object):
-    # The balancer: receives requests and distributes them.
+    """
+    The balancer: receives requests and distributes them.
+    """
+
     def __init__(self, context, machines, name):
         super().__init__(name)
         self.context = context
@@ -276,7 +286,9 @@ class Router(Observable, object):
 
 
 class RouterLeastCongested(Router):
-    # The balancer: receives requests and distributes them. This one is aware of the object allocation in caches.
+    """
+     The balancer: receives requests and distributes them. This one is aware of the object allocation in caches.
+     """
     def __init__(self, context, machines, name, alloc_map):
         # Not the bottleneck!
         self.alloc_map = alloc_map
