@@ -21,5 +21,18 @@ to run:
 
 ## One-hop DHT
 
-TODO
+
+** Not finished yet. **
+
+A one hop dht (highly simplified), inspired by [One-hop](https://www.usenix.org/legacy/events/hotos03/tech/full_papers/gupta/gupta_html/). 
+
+Each machine is responsible for an ID range and if a request is not for their id the machine will forward it to the correct machine.
+
+Each machine knows the location of all other machines.
+
+to run:
+
+
+```$ python oneHop.py ```
+
 
