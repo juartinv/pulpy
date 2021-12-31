@@ -113,10 +113,12 @@ def  pulpy2ban():
                                         alloc_map = allocator.allocation_map)
 
     # Generate Potentially Malicious Sources
+    sources=[]
     for source in range(sources):
         src = MalicousSource(context = ctx, intensity = 10, name=source)
         # instruct the source to send its requests to the load balancer
         env.process(src.send_requests(load_balancer))
+        sources.append(src)
 
     # Controller
     Controller(ctx, allocator, load_balancer, verbose = verbose)
@@ -133,7 +135,8 @@ def  pulpy2ban():
     if verbose:
         print("data by name: ", monitor.data_by_name)
     elapsed_time = time.time() - start
-    print("elapsed real time:", elapsed_time, " simulated ", src.n, " requests. ( ", src.n/elapsed_time,"reqs/s)")
+    total_requests=sum([src.n for src in sources])
+    print("elapsed real time:", elapsed_time, " simulated ", total_requests, " requests. ( ", total_requests/elapsed_time,"reqs/s)")
     print()
 
 
