@@ -60,7 +60,19 @@ class pulpy2ban_Constrained_Machine(Constrained_Machine):
             self.pulpy2ban_logs[request.source][0]+=1
             self.pulpy2ban_logs[request.source][1]=self.env.now
 
-class MalicousSource(Source):
+class pulpy2banRequest(Request):
+    """
+    Normal request, with some extra fields for Onehop.
+    """
+    def __init__( self, n, item, cli_proc_rate, cli_bw, do_timestamp, source, content):
+        super().__init__( n, item, cli_proc_rate, cli_bw, do_timestamp)
+        self.topulpy2ban(source, content)
+
+    def topulpy2ban(self, source, content):
+        self.source=source
+        self.content=content
+        
+class MaliciousSource(Source):
     """
     Normal source, that sometimes sends "Malicious" requests.
     """
@@ -72,6 +84,8 @@ class MalicousSource(Source):
     def send_requests(self, dst):
         while True:
             new_request, delta_t = self.generate_request()
+            new_request.__class__ = pulpy2banRequest
+            new_request.topulpy2ban(source=self.name, content=self.fill_content())
             yield self.env.timeout(delta_t)
             new_request.source=self.name
             new_request.content=self.fill_content()
@@ -91,7 +105,7 @@ def  pulpy2ban():
     catalog_size = 30
     verbose = True
     simulated_time = 100
-    sources=10
+    num_sources=10
 
     # Create a common context
     env = simpy.Environment()
@@ -113,15 +127,17 @@ def  pulpy2ban():
                                         alloc_map = allocator.allocation_map)
 
     # Generate Potentially Malicious Sources
-    for source in range(sources):
-        src = MalicousSource(context = ctx, intensity = 10, name=source)
+    sources=[]
+    for source in range(num_sources):
+        src = MaliciousSource(context = ctx, intensity = 10, name=source)
         # instruct the source to send its requests to the load balancer
         env.process(src.send_requests(load_balancer))
+        sources.append(src)
 
     # Controller
     Controller(ctx, allocator, load_balancer, verbose = verbose)
 
-
+#TODO change soure name
     # Let's go!
     print("Run sim...")
     start = time.time()
@@ -133,7 +149,8 @@ def  pulpy2ban():
     if verbose:
         print("data by name: ", monitor.data_by_name)
     elapsed_time = time.time() - start
-    print("elapsed real time:", elapsed_time, " simulated ", src.n, " requests. ( ", src.n/elapsed_time,"reqs/s)")
+    total_requests=sum([src.n for src in sources])
+    print("elapsed real time:", elapsed_time, " simulated ", total_requests, " requests. ( ", total_requests/elapsed_time,"reqs/s)")
     print()
 
 
