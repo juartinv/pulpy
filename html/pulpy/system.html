@@ -149,6 +149,58 @@ class Source(ContextUser, RequestSource):
         self.update_probability_map(prob_map)
 
 
+class PeriodicSource(ContextUser, CoreRequestSource):
+    &#34;&#34;&#34;
+     Creates and emits requests periodicly.
+     (Every x time increments request y is made)
+     &#34;&#34;&#34;
+    def __init__(self, context, init_n = 0, intensity = 10, min_interval=3, max_interval= 10, latest_start_time=5, verbose=False):
+        ContextUser.__init__(self, context)
+        CoreRequestSource.__init__(self, init_n = init_n)
+        assert(min_interval&lt; max_interval)
+        self.dst=None
+        self.max_interval=max_interval
+        self.min_interval=min_interval
+        self.latest_start_time=latest_start_time
+        self.verbose=verbose
+
+    def send_request(self, dst, request):
+        new_req = self.generate_request(request)
+        new_req.start()
+        dst.add_request(new_req)
+
+    def send_requests(self, dst):
+        self.dst=dst
+        for item in self.catalog.get_iterator():
+            self.env.process(PeriodicRequest(item, self, start_time=random.randint(0,self.latest_start_time), interval=random.randint(self.min_interval,self.max_interval)).run())
+        yield self.env.timeout(1e6)
+
+
+class PeriodicRequest():
+    &#34;&#34;&#34;
+    Sends the same request every interval time starting at start time.
+    &#34;&#34;&#34;
+    def __init__(self, item, source, start_time, interval):
+        self.item=item
+        self.source=source
+        self.start_time=start_time
+        self.interval=interval
+        if self.source.verbose:
+            print (&#34;Starting periodic request for: &#34;, self.item.name, &#34; with start time &#34;, self.start_time, &#34; and interval of: &#34;, self.interval)
+    def run(self):
+        if self.source.dst==None:
+            if self.source.verbose:
+                print_red(&#34;No destination to send request to.&#34;)
+            return
+
+        yield self.source.env.timeout(self.start_time)
+        while True:
+            self.source.send_request( self.source.dst, self.item)
+            if self.source.verbose:
+                print (&#34;Sent request at time &#34;, self.source.env.now, &#34; for item &#34;, self.item.name)
+            yield self.source.env.timeout(self.interval)
+        return
+
 class Monitor(Observer, object):
     &#34;&#34;&#34;
     Observer Object used to monitor simulation.
@@ -771,6 +823,7 @@ generates and sends requests.</p></div>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="pulpy.machines.CoreMachine" href="machines.html#pulpy.machines.CoreMachine">CoreMachine</a></li>
+<li><a title="pulpy.system.PeriodicSource" href="#pulpy.system.PeriodicSource">PeriodicSource</a></li>
 <li><a title="pulpy.system.RequestSource" href="#pulpy.system.RequestSource">RequestSource</a></li>
 </ul>
 <h3>Methods</h3>
@@ -992,6 +1045,146 @@ generates and sends requests.</p></div>
         if k not in self.ts.keys():
             self.ts[k] = []
         self.ts[k].append(v)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pulpy.system.PeriodicRequest"><code class="flex name class">
+<span>class <span class="ident">PeriodicRequest</span></span>
+<span>(</span><span>item, source, start_time, interval)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sends the same request every interval time starting at start time.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PeriodicRequest():
+    &#34;&#34;&#34;
+    Sends the same request every interval time starting at start time.
+    &#34;&#34;&#34;
+    def __init__(self, item, source, start_time, interval):
+        self.item=item
+        self.source=source
+        self.start_time=start_time
+        self.interval=interval
+        if self.source.verbose:
+            print (&#34;Starting periodic request for: &#34;, self.item.name, &#34; with start time &#34;, self.start_time, &#34; and interval of: &#34;, self.interval)
+    def run(self):
+        if self.source.dst==None:
+            if self.source.verbose:
+                print_red(&#34;No destination to send request to.&#34;)
+            return
+
+        yield self.source.env.timeout(self.start_time)
+        while True:
+            self.source.send_request( self.source.dst, self.item)
+            if self.source.verbose:
+                print (&#34;Sent request at time &#34;, self.source.env.now, &#34; for item &#34;, self.item.name)
+            yield self.source.env.timeout(self.interval)
+        return</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pulpy.system.PeriodicRequest.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self):
+    if self.source.dst==None:
+        if self.source.verbose:
+            print_red(&#34;No destination to send request to.&#34;)
+        return
+
+    yield self.source.env.timeout(self.start_time)
+    while True:
+        self.source.send_request( self.source.dst, self.item)
+        if self.source.verbose:
+            print (&#34;Sent request at time &#34;, self.source.env.now, &#34; for item &#34;, self.item.name)
+        yield self.source.env.timeout(self.interval)
+    return</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pulpy.system.PeriodicSource"><code class="flex name class">
+<span>class <span class="ident">PeriodicSource</span></span>
+<span>(</span><span>context, init_n=0, intensity=10, min_interval=3, max_interval=10, latest_start_time=5, verbose=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates and emits requests periodicly.
+(Every x time increments request y is made)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PeriodicSource(ContextUser, CoreRequestSource):
+    &#34;&#34;&#34;
+     Creates and emits requests periodicly.
+     (Every x time increments request y is made)
+     &#34;&#34;&#34;
+    def __init__(self, context, init_n = 0, intensity = 10, min_interval=3, max_interval= 10, latest_start_time=5, verbose=False):
+        ContextUser.__init__(self, context)
+        CoreRequestSource.__init__(self, init_n = init_n)
+        assert(min_interval&lt; max_interval)
+        self.dst=None
+        self.max_interval=max_interval
+        self.min_interval=min_interval
+        self.latest_start_time=latest_start_time
+        self.verbose=verbose
+
+    def send_request(self, dst, request):
+        new_req = self.generate_request(request)
+        new_req.start()
+        dst.add_request(new_req)
+
+    def send_requests(self, dst):
+        self.dst=dst
+        for item in self.catalog.get_iterator():
+            self.env.process(PeriodicRequest(item, self, start_time=random.randint(0,self.latest_start_time), interval=random.randint(self.min_interval,self.max_interval)).run())
+        yield self.env.timeout(1e6)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pulpy.interfaces.ContextUser" href="interfaces.html#pulpy.interfaces.ContextUser">ContextUser</a></li>
+<li><a title="pulpy.system.CoreRequestSource" href="#pulpy.system.CoreRequestSource">CoreRequestSource</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pulpy.system.PeriodicSource.send_request"><code class="name flex">
+<span>def <span class="ident">send_request</span></span>(<span>self, dst, request)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_request(self, dst, request):
+    new_req = self.generate_request(request)
+    new_req.start()
+    dst.add_request(new_req)</code></pre>
+</details>
+</dd>
+<dt id="pulpy.system.PeriodicSource.send_requests"><code class="name flex">
+<span>def <span class="ident">send_requests</span></span>(<span>self, dst)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def send_requests(self, dst):
+    self.dst=dst
+    for item in self.catalog.get_iterator():
+        self.env.process(PeriodicRequest(item, self, start_time=random.randint(0,self.latest_start_time), interval=random.randint(self.min_interval,self.max_interval)).run())
+    yield self.env.timeout(1e6)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1771,6 +1964,19 @@ Can be a request for Work or Space.</p></div>
 <ul class="">
 <li><code><a title="pulpy.system.Monitor.update" href="#pulpy.system.Monitor.update">update</a></code></li>
 <li><code><a title="pulpy.system.Monitor.updatets" href="#pulpy.system.Monitor.updatets">updatets</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pulpy.system.PeriodicRequest" href="#pulpy.system.PeriodicRequest">PeriodicRequest</a></code></h4>
+<ul class="">
+<li><code><a title="pulpy.system.PeriodicRequest.run" href="#pulpy.system.PeriodicRequest.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pulpy.system.PeriodicSource" href="#pulpy.system.PeriodicSource">PeriodicSource</a></code></h4>
+<ul class="">
+<li><code><a title="pulpy.system.PeriodicSource.send_request" href="#pulpy.system.PeriodicSource.send_request">send_request</a></code></li>
+<li><code><a title="pulpy.system.PeriodicSource.send_requests" href="#pulpy.system.PeriodicSource.send_requests">send_requests</a></code></li>
 </ul>
 </li>
 <li>
