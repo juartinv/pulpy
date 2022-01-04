@@ -318,7 +318,7 @@ class Request(object):
     _FINISHED = 2
     _PAUSED = 3
 
-    def __init__(self,env, n, item, cli_proc_rate = 10000, cli_bw = 10000, do_timestamp = False, source=None, content=None):
+    def __init__(self,env, n, item, cli_proc_rate = 10000, cli_bw = 10000, do_timestamp = False):
         assert isinstance(item, Item)
         self.env = env
         self.item = item  #an Item object
@@ -336,8 +336,6 @@ class Request(object):
         self.start_time = None
         self.do_timestamp = do_timestamp
         self.finish_callback = None    #update to do an action on request being finished
-        self.source=source
-        self.content=content
 
     def _process(self, target_resource, target_cap, delta_t, quota, wanted = None):
         if not wanted:
