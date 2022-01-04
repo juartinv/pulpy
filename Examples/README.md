@@ -37,7 +37,24 @@ ex.
 
 ```$ python oneHop.py v=1```  
 	--> sends requests to one random machine prior to the correct one.
-	
+
+## Shower
+
+This simulates multiple showers and multiple users trying to adjust the temperatures to their preffered temperatures. Each user can have access to any amount of the showers.
+
+Users can only say hotter or colder, additionally they have to work against others' wishes if they have a different preffered temperatures.
+
+If they all agree on the ideal temperature this usually settles itself relativly quickly: 
+
+![](gifs/shower_consensuas.gif)
+
+Unlike when they do not:
+
+![](gifs/shower_no_consensuas.gif)
+
+To run:
+
+```$ python shower.py```  
 
 ## Periodic
 
@@ -47,9 +64,7 @@ to run:
 
 ```$ python periodic.py ```
 
-## Shower
 
-todo
 
 ## Web Search
 

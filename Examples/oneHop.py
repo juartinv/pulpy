@@ -71,6 +71,7 @@ class oneHop_Constrained_Machine(Constrained_Machine):
         dst= self.find_address(dst)
         request.start()
         dst.add_request(request)
+        
 class oneHopRequest(Request):
     """
     Normal request, with some extra fields for Onehop.
