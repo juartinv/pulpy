@@ -44,7 +44,7 @@ This simulates multiple showers and multiple users trying to adjust the temperat
 
 Users can only say hotter or colder, additionally they have to work against others' wishes if they have a different preffered temperatures.
 
-If they all agree on the ideal temperature this usually settles itself relativly quickly: 
+If they all agree, or are close to agreeing, on the ideal temperature this usually settles itself relativly quickly: 
 
 ![](gifs/shower_consensuas.gif)
 
@@ -54,7 +54,15 @@ Unlike when they do not:
 
 To run:
 
-```$ python shower.py```  
+```$ python shower.py```
+
+with graph:
+
+```$ python shower.py -g```
+
+with close preferred temperatures:
+
+```$ python shower.py -c```
 
 ## Periodic
 
