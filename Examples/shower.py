@@ -8,12 +8,10 @@ from pulpy.machines import RouterLeastCongested,  Constrained_Machine
 from pulpy.offline import Controller
 from pulpy.alloc import Allocator
 
-import matplotlib.pyplot as plt
-import numpy as np
 
 class shower_Manager(Constrained_Machine):
     """
-    Sets a randome temperature for its "shower".
+    Sets a random temperature for its "shower".
     Waits for a response to increase or decrease the temperature.
      """
     def __init__(self, name, context,  bandwidth = 1.0,  hard_limit_concurrency = 20, space_capacity = 10, verbose=True, id=0,  max_temp=70, min_temp=-10):
@@ -35,7 +33,9 @@ class shower_Manager(Constrained_Machine):
         self.window=[self.min_temp, self.max_temp]
 
     def adjust_temperature(self, instructions):
-
+        """
+        Responds to shower users's temperature change instructions.
+        """
         if instructions=="+":
             if self.current_temp>=self.window[1]:
                 #self.window[1]=random.randint(self.window[0]+2, self.max_temp)
@@ -53,6 +53,9 @@ class shower_Manager(Constrained_Machine):
         self.current_temp=int(self.window[0]+(self.window[1]- self.window[0])/2) +overshoot
 
 class graphing_shower_Manager(shower_Manager):
+    """
+    A normal shower manager but it also updates the temperature graph everytime a temperature change is made.
+    """
     def __init__(self, name, context, shower_Managers, shower_Users, fig, plt, bandwidth = 1.0,  hard_limit_concurrency = 20, space_capacity = 10, verbose=True, id=0, max_temp=70, min_temp=-20):
         super.__init__( name, context,  bandwidth ,  hard_limit_concurrency , space_capacity , verbose, id,  max_temp, min_temp)
         self.tographing(shower_Managers, shower_Users)
@@ -66,7 +69,6 @@ class graphing_shower_Manager(shower_Manager):
     def adjust_temperature(self, instructions):
         super().adjust_temperature(instructions)
         self.fig.clear()
-
         update_graph(self.fig, self.ax, self.shower_Managers, self.shower_Users)
 
 class showerRequest(Request):
@@ -103,11 +105,12 @@ class shower_User(ContextUser, CoreRequestSource):
             for s in self.showers:
                 if not s.current_temp==self.prefered_temperature:
                     self.adjust_temperature(s)
-            yield self.env.timeout(1)
+            yield self.env.timeout(.001)
 
 def update_graph(fig, ax, shower_Managers, shower_Users):
-
-
+    """
+    Updates the temperature graphs.
+    """
     ind=np.arange(len(shower_Managers))
     p1 = plt.bar(ind, [s.current_temp for s in shower_Managers])
     plt.axhline(0, color='grey', linewidth=0.8)
@@ -129,13 +132,13 @@ def update_graph(fig, ax, shower_Managers, shower_Users):
     plt.ylim(-40, 80)
     plt.tight_layout()
     plt.draw()
-    plt.pause(0.0001)
+    plt.pause(0.000001)
 
 
-def make_Shower_system(env, ctx, num_shower_Managers, num_shower_Users, verbose):
-
-    # Create request processing machines
-
+def make_Shower_system(env, ctx, num_shower_Managers, num_shower_Users, verbose, graphing, c):
+    """
+    Build shower system.
+    """
     shower_Managers = []
 
     for i in range(num_shower_Managers):
@@ -147,31 +150,33 @@ def make_Shower_system(env, ctx, num_shower_Managers, num_shower_Users, verbose)
     for User in range(num_shower_Users):
         amount_of_showers=random.randint(1, len(shower_Managers))
         user_showers= random.choices(shower_Managers, k=amount_of_showers)
-        prefered_temperature= random.randint(20, 50)
-        #prefered_temperature=40
+        if c:
+            prefered_temperature= random.randint(39, 45)
+        else:
+            prefered_temperature= random.randint(-10, 50)
         user= shower_User(context = ctx, name=User, intensity = 10, showers=user_showers, prefered_temperature=prefered_temperature)
 
         # instruct the source to send its requests to the load balancer
         env.process(user.send_requests())
         shower_Users.append(user)
-    fig, ax = plt.subplots()
-    update_graph(fig, ax, shower_Managers, shower_Users)
-    for manager in shower_Managers:
-        manager.__class__=graphing_shower_Manager
-        manager.tographing(fig=fig, ax=ax, shower_Managers=shower_Managers, shower_Users=shower_Users)
+
+    if graphing:
+        fig, ax = plt.subplots()
+        update_graph(fig, ax, shower_Managers, shower_Users)
+        for manager in shower_Managers:
+            manager.__class__=graphing_shower_Manager
+            manager.tographing(fig=fig, ax=ax, shower_Managers=shower_Managers, shower_Users=shower_Users)
     return shower_Managers, shower_Users
 
 
-def  shower():
+def  shower(graphing, c):
 
     # Simulation parameters
     num_shower_Managers=10
     num_shower_Users=10
 
     verbose = True
-    simulated_time = 1
-
-
+    simulated_time = 10
 
     # Create a common context
     env = simpy.Environment()
@@ -180,16 +185,18 @@ def  shower():
     ctx = Context( env, monitor, catalog)
 
     #Generate oneHop system
-    showers, shower_Users=make_Shower_system(env, ctx, num_shower_Managers, num_shower_Users, verbose=verbose)
+    showers, shower_Users=make_Shower_system(env, ctx, num_shower_Managers, num_shower_Users, verbose=verbose, graphing=graphing, c=c)
+    print ("Start Temperatures:")
     for shower in showers:
-        print(shower.name, shower.current_temp)
+        print("Shower:", shower.name, "Temperature", shower.current_temp)
     # Let's go!
     print("Run sim...")
     start = time.time()
     env.run(until=simulated_time)
     print("Simulation finished!\n")
+    print ("Final Temperatures:")
     for shower in showers:
-        print(shower.name, shower.current_temp, shower.window)
+        print("Shower:", shower.name, "Temperature", shower.current_temp)
     # Print stats
     elapsed_time = time.time() - start
     total_requests=sum([src.n for src in shower_Users])
@@ -197,4 +204,15 @@ def  shower():
     print()
 
 if __name__ == "__main__":
-    shower()
+    graphing=False
+    c=False
+    if len(sys.argv)>1:
+        if  (not "-g" in sys.argv) and  (not "-c" in sys.argv):
+            raise ValueError("Not a valid parameter. Please use -g to graph Temperatures and -c for shower uses to have a small range of preffered Temperatures.")
+        if ("-g" in sys.argv):
+            import matplotlib.pyplot as plt
+            import numpy as np
+            graphing=True
+        if ("-c" in sys.argv):
+            c=True
+    shower(graphing, c)
