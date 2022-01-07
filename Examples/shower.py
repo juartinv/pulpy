@@ -21,9 +21,9 @@ class shower_Manager(Constrained_Machine):
         assert(min_temp< max_temp)
         self.max_temp=max_temp
         self.min_temp=min_temp
+        self.memory=[Item(name="temp_adjust", work=1, size=0)]
         self.window=[self.min_temp, self.max_temp]
         self.current_temp=random.randint(self.min_temp, self.max_temp)
-
 
     def _admission_control(self, request):
         super()._admission_control(request)
