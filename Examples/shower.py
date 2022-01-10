@@ -52,25 +52,6 @@ class shower_Manager(Constrained_Machine):
         #self.current_temp=random.randint(*self.window)
         self.current_temp=int(self.window[0]+(self.window[1]- self.window[0])/2) +overshoot
 
-class graphing_shower_Manager(shower_Manager):
-    """
-    A normal shower manager but it also updates the temperature graph everytime a temperature change is made.
-    """
-    def __init__(self, name, context, shower_Managers, shower_Users, fig, plt, bandwidth = 1.0,  hard_limit_concurrency = 20, space_capacity = 10, verbose=True, id=0, max_temp=70, min_temp=-20):
-        super.__init__( name, context,  bandwidth ,  hard_limit_concurrency , space_capacity , verbose, id,  max_temp, min_temp)
-        self.tographing(shower_Managers, shower_Users)
-
-    def tographing(self, shower_Managers, shower_Users, fig, ax):
-        self.shower_Managers=shower_Managers
-        self.shower_Users=shower_Users
-        self.fig=fig
-        self.ax=ax
-
-    def adjust_temperature(self, instructions):
-        super().adjust_temperature(instructions)
-        self.fig.clear()
-        update_graph(self.fig, self.ax, self.shower_Managers, self.shower_Users)
-
 class showerRequest(Request):
     """
     Request to increase or decrease shower temperature.
@@ -107,33 +88,6 @@ class shower_User(ContextUser, CoreRequestSource):
                     self.adjust_temperature(s)
             yield self.env.timeout(.001)
 
-def update_graph(fig, ax, shower_Managers, shower_Users):
-    """
-    Updates the temperature graphs.
-    """
-    ind=np.arange(len(shower_Managers))
-    p1 = plt.bar(ind, [s.current_temp for s in shower_Managers])
-    plt.axhline(0, color='grey', linewidth=0.8)
-    ax.set_ylabel('Temperature')
-    ax.set_xlabel('Showers')
-    ax.set_xticks(ind)
-    ax.set_xticklabels([s.name for s in shower_Managers])
-
-    colors=["blue", "red", "yellow", "green", "black", "indigo", "darkred", "lime", "seagreen", "pink"]
-
-    for u , user in enumerate(shower_Users):
-        for indx, i in enumerate(user.showers):
-            if indx==0:
-                plt.plot([i.name-.5, i.name+.5], [user.prefered_temperature, user.prefered_temperature], label="User"+str(u), color=colors[u%len(colors)])
-            else:
-                plt.plot([i.name-.5, i.name+.5], [user.prefered_temperature, user.prefered_temperature], color=colors[u%len(colors)])
-
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), title="Prefered Temperatures")
-    plt.ylim(-40, 80)
-    plt.tight_layout()
-    plt.draw()
-    plt.pause(0.000001)
-
 
 def make_Shower_system(env, ctx, num_shower_Managers, num_shower_Users, verbose, graphing, c):
     """
@@ -160,12 +114,10 @@ def make_Shower_system(env, ctx, num_shower_Managers, num_shower_Users, verbose,
         env.process(user.send_requests())
         shower_Users.append(user)
 
+
     if graphing:
-        fig, ax = plt.subplots()
-        update_graph(fig, ax, shower_Managers, shower_Users)
-        for manager in shower_Managers:
-            manager.__class__=graphing_shower_Manager
-            manager.tographing(fig=fig, ax=ax, shower_Managers=shower_Managers, shower_Users=shower_Users)
+         graphing= GraphMaker( env, shower_Managers, shower_Users)
+         env.process(graphing.run())
     return shower_Managers, shower_Users
 
 
@@ -210,8 +162,7 @@ if __name__ == "__main__":
         if  (not "-g" in sys.argv) and  (not "-c" in sys.argv):
             raise ValueError("Not a valid parameter. Please use -g to graph Temperatures and -c for shower uses to have a small range of preffered Temperatures.")
         if ("-g" in sys.argv):
-            import matplotlib.pyplot as plt
-            import numpy as np
+            from graphing.showerGraph import *
             graphing=True
         if ("-c" in sys.argv):
             c=True

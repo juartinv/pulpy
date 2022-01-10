@@ -269,7 +269,6 @@ if __name__ == "__main__":
         if  (not "-g" in sys.argv):
             raise ValueError("Not a valid parameter. Please use -g to visualize system.")
         if ("-g" in sys.argv):
-
             from graphing.webSearchGraph import *
             graphing=True
 
