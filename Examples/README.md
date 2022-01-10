@@ -1,11 +1,11 @@
 # Examples
 
-A small collection of example uses for pulpy.
+A small collection of examples uses for pulpy.
 
 
 ## pulpy2ban
 
-Inspired by [Fail2Ban](https://www.fail2ban.org/wiki/index.php/Main_Page) this examples blocks all requests from a source that was deemed to be "malicous" for x amount of time where x increase exponentially everytime a "malicous" request occurs.
+Inspired by [Fail2Ban](https://www.fail2ban.org/wiki/index.php/Main_Page) this examples blocks all requests from a source that was deemed to be "malicious" for x amount of time where x increase exponentially every time a "malicious" request occurs.
 
 to run:
 
@@ -42,11 +42,11 @@ ex.
 
 ## Shower
 
-This simulates multiple showers and multiple users trying to adjust the temperatures to their preffered temperatures. Each user can have access to any amount of the showers.
+This simulates multiple showers and multiple users trying to adjust the temperatures to their preferred temperatures. Each user can have access to any amount of the showers.
 
-Users can only say hotter or colder, additionally they have to work against others' wishes if they have a different preffered temperatures.
+Users can only say hotter or colder, additionally, they have to work against others' wishes if they have different preferred temperatures.
 
-If they all agree, or are close to agreeing, on the ideal temperature this usually settles itself relativly quickly: 
+If they all agree, or are close to agreeing, on the ideal temperature this usually settles itself relatively quickly: 
 
 ![](gifs/shower_consensuas.gif)
 
