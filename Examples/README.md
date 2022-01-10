@@ -1,6 +1,6 @@
 # Examples
 
-A small collection of examples uses for pulpy.
+A small collection of example uses for pulpy.
 
 
 ## pulpy2ban
