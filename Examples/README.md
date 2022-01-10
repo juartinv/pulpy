@@ -1,5 +1,7 @@
 # Examples
 
+A small collection of example uses for pulpy.
+
 
 ## pulpy2ban
 
@@ -64,6 +66,27 @@ with close preferred temperatures:
 
 ```$ python shower.py -c```
 
+
+## Web Search
+
+A highly simplified "web search". 
+
+1. Sources send requests to the load balancer. 
+2. The load balancer sends requests randomly to frontend servers. 
+3. If the frontend server has the requested item, it will complete the job.
+4. Then the frontend server requests an item in each backend servers' memory. 
+5. Once the frontend server has all backend responses it sends it directly to the original request source.
+
+To run:
+
+```$ python webSearch.py```
+
+with graph:
+
+```$ python webSearch.py -g```
+
+![](gifs/webSearch.gif)
+
 ## Periodic
 
 Periodic uses the PeriodicSource class to generate for every item a request every x time units where x is chosen randomly. 
@@ -74,8 +97,5 @@ to run:
 
 
 
-## Web Search
-
-Todo
 
 
