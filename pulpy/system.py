@@ -243,11 +243,11 @@ class Item(object):
     Object that can be requested by users.
     """
     __slots__ = ["name", "work", "size","life_cycle"]
-    def __init__(self, name, work, size):
+    def __init__(self, name, work, size, life_cycle=0):
         self.name = name
         self.work = work
         self.size = size
-        self.life_cycle = 0
+        self.life_cycle = life_cycle
         # two lifecycles:
         #  0: first exhaust work, then transfer (default).
         #  1: simoultaneously consume work and transfer.
@@ -324,7 +324,6 @@ class Request(object):
         self.item = item  #an Item object
 
         self.state = Request._NOT_INIT
-
         self.remaining_work = item.work   # amount of work required to finish the requested task.
         self.cli_proc_rate = cli_proc_rate  # Client's processing rate or bandwith
 

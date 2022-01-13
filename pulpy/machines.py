@@ -152,7 +152,6 @@ class Machine(Observable, CoreMachine, object):
         if not self.get_concurrency():  # if no active requests return
             return self.working_set
 
-
         for req in self.working_set:
             work_quota = req.process("work", delta_visit, work_quota)
             if req.may_process_size():
