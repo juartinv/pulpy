@@ -11,7 +11,7 @@ from pulpy.offline import Controller
 FIELD_SIZE=10000
 class Bird(Machine):
     """
-    Source Machine Hybrid. Represents bird in a 2d plain.
+    Represents bird in a 2d plain.
     """
     def __init__(self, context, init_n = 0, intensity = 10, weights = None, name="Bird", x=None, y=None, direction=None, restricted_movement=None, behavior="f"):
         Machine.__init__(self, name, context)
