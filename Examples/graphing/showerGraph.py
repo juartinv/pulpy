@@ -58,9 +58,9 @@ class graphing_shower_Manager(shower_Manager):
     """
     A normal shower manager but it also updates the temperature graph everytime a temperature change is made.
     """
-    def __init__(self, name, context, shower_Managers, shower_Users, fig, plt, bandwidth = 1.0,  hard_limit_concurrency = 20, space_capacity = 10, verbose=True, id=0, max_temp=70, min_temp=-20):
+    def __init__(self, name, context, temperatures, bandwidth = 1.0,  hard_limit_concurrency = 20, space_capacity = 10, verbose=True, id=0, max_temp=70, min_temp=-20):
         super.__init__( name, context,  bandwidth ,  hard_limit_concurrency , space_capacity , verbose, id,  max_temp, min_temp)
-        self.tographing(shower_Managers, shower_Users)
+        self.tographing(temperatures)
 
     def tographing(self, temperatures):
         self.temperatures=temperatures
