@@ -12,7 +12,6 @@ to run:
 
 ```
 $ python pulpy2ban.py
-
 ```
 
 ## One-hop DHT
@@ -39,7 +38,6 @@ To turn your One-hop DHT to a \<valiant\> many random hops prior system run:
 
 ```
 $ python oneHop.py v=<valiant>
-
 ```
 
 ex.
@@ -170,7 +168,6 @@ to run:
 
 ```
 $ python periodic.py
-
 ```
 
 
