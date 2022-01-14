@@ -10,7 +10,10 @@ Inspired by [Fail2Ban](https://www.fail2ban.org/wiki/index.php/Main_Page) this e
 to run:
 
 
-```$ python pulpy2ban.py ```
+```
+$ python pulpy2ban.py
+
+```
 
 ## One-hop DHT
 
@@ -25,20 +28,27 @@ Each machine knows the location of all other machines.
 to run:
 
 
-```$ python oneHop.py ```
+```
+$ python oneHop.py
+```
 
 ### Valiantly routing One-hop DHT
 
 To turn your One-hop DHT to a \<valiant\> many random hops prior system run:
 
 
-```$ python oneHop.py v=<valiant>```
+```
+$ python oneHop.py v=<valiant>
+
+```
 
 ex.
 
 
-```$ python oneHop.py v=1```  
-	--> sends requests to one random machine prior to the correct one.
+```
+$ python oneHop.py v=1
+```  
+--> sends requests to one random machine prior to the correct one.
 
 ## Shower
 
@@ -56,15 +66,21 @@ Unlike when they do not:
 
 To run:
 
-```$ python shower.py```
+```
+$ python shower.py
+```
 
 with graph:
 
-```$ python shower.py -g```
+```
+$ python shower.py -g
+```
 
 with close preferred temperatures:
 
-```$ python shower.py -c```
+```
+$ python shower.py -c
+```
 
 
 ## Web Search
@@ -79,13 +95,72 @@ A highly simplified "web search".
 
 To run:
 
-```$ python webSearch.py```
+```
+$ python webSearch.py 
+```
 
 with graph:
 
-```$ python webSearch.py -g```
+```
+$ python webSearch.py -g
+```
 
 ![](gifs/webSearch.gif)
+
+## Swarm
+
+Swarm represents a swarm of birds in a 2 dimensional space.
+Each bird has a direction that it is flying, and at times makes a call to all birds around. A bird can hear a call if it is close enough to the calling bird. If a calling bird hears a call it can react to this call.
+
+Birds can folow other birds:
+
+
+![](gifs/swarm_follow.gif)
+
+to run:
+
+```
+python swarm.py -g -b=f
+```
+
+Birds can join other birds:
+
+
+![](gifs/swarm_join.gif)
+
+to run:
+
+```
+python swarm.py -g -b=j
+```
+
+
+or birds can avoid other birds:
+
+
+![](gifs/swarm_avoid.gif)
+
+to run:
+
+```
+python swarm.py -g -b=a
+```
+
+to run without graph:
+
+to run:
+
+```
+python swarm.py -b=<desired behavior>
+```
+
+
+
+
+
+
+
+
 
 ## Periodic
 
@@ -93,7 +168,10 @@ Periodic uses the PeriodicSource class to generate for every item a request ever
 
 to run:
 
-```$ python periodic.py ```
+```
+$ python periodic.py
+
+```
 
 
 
