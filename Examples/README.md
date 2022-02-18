@@ -31,7 +31,7 @@ to run:
 $ python oneHop.py
 ```
 
-### Valiantly routing One-hop DHT
+### Valiant routing in One-hop DHT
 
 To turn your One-hop DHT to a \<valiant\> many random hops prior system run:
 
