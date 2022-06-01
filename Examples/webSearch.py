@@ -7,6 +7,8 @@ from pulpy.machines import RouterLeastCongested,  Constrained_Machine
 from pulpy.offline import Controller
 from pulpy.alloc import Allocator
 grey= (.33,.33,.31)
+
+
 class FrontendServer(Constrained_Machine):
     """
     Server recives a request proccesses that request, then asks every backend server for a resource.

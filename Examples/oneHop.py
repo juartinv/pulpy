@@ -17,8 +17,8 @@ class oneHop_Constrained_Machine(Constrained_Machine):
     Each machine has knows every others machine's address.
      """
 
-    def __init__(self, name, context,  bandwidth = 1.0,  hard_limit_concurrency = 20, space_capacity = 10, verbose=True, oneHopTable=[], id=0):
-        super().__init__( name, context, bandwidth, hard_limit_concurrency, space_capacity)
+    def __init__(self, name, context,  verbose=True, oneHopTable=[], id=0):
+        super().__init__( name, context)
         self.verbose= verbose
         self.oneHopTable=oneHopTable
         self.id=id
@@ -63,7 +63,7 @@ class oneHop_Constrained_Machine(Constrained_Machine):
         if request.valiant>0:
             orig=dst
             dst=random.randint(0, len(self.oneHopTable)-3)
-            dst=[entry for entry in self.oneHopTable if not entry in [self.id, orig]][dst]
+            dst=[entry for entry in self.oneHopTable if not entry in [self.id, orig]][dst] # CHECK to see if allowed to send to correct host
             request.valiant-=1
             print_red("Machine "+ str(self.id ) + " is forwarding request for "+ str(orig) +" over random machine "+ str(dst))
         else:
@@ -71,13 +71,13 @@ class oneHop_Constrained_Machine(Constrained_Machine):
         dst= self.find_address(dst)
         request.start()
         dst.add_request(request)
-        
+
 class oneHopRequest(Request):
     """
     Normal request, with some extra fields for Onehop.
     """
-    def __init__( self, n, item, cli_proc_rate, cli_bw, do_timestamp, source, content, valiant=0):
-        super().__init__( n, item, cli_proc_rate, cli_bw, do_timestamp)
+    def __init__( self, n, item, source, content, valiant=0):
+        super().__init__( n, item)
         self.toOneHop(source, content, valiant)
 
     def toOneHop(self, source, content, valiant):
@@ -89,8 +89,8 @@ class oneHopSource(Source):
     """
     Normal source, that sends requests to random oneHop resources.
     """
-    def __init__(self, context, init_n = 0, intensity = 10, weights = None, name=None, maxID=100, valiant=0):
-        super().__init__(context, init_n, intensity, weights)
+    def __init__(self, context, name=None, maxID=100, valiant=0):
+        super().__init__(context)
         self.name=name
         self.maxID=maxID
         self.valiant=valiant
@@ -188,8 +188,6 @@ def  oneHop(valiant=0):
     total_requests=sum([src.n for src in sources])
     print("elapsed real time:", elapsed_time, " simulated ", total_requests, " requests. ( ", total_requests/elapsed_time,"reqs/s)")
     print()
-
-
 
 if __name__ == "__main__":
     if len(sys.argv)>1:

@@ -14,8 +14,8 @@ class shower_Manager(Constrained_Machine):
     Sets a random temperature for its "shower".
     Waits for a response to increase or decrease the temperature.
      """
-    def __init__(self, name, context,  bandwidth = 1.0,  hard_limit_concurrency = 20, space_capacity = 10, verbose=True, id=0,  max_temp=70, min_temp=-10):
-        super().__init__( name, context, bandwidth, hard_limit_concurrency, space_capacity)
+    def __init__(self, name, context, verbose=True, id=0,  max_temp=70, min_temp=-10):
+        super().__init__( name, context)
         self.verbose= verbose
         self.name
         assert(min_temp< max_temp)
@@ -54,9 +54,9 @@ class shower_Manager(Constrained_Machine):
 
 class showerRequest(Request):
     """
-    Request to increase or decrease shower temperature.
+    Request to increase or decrease shower temperature. #TODO add maximum and lower pressure
     """
-    def __init__(self,env, n=0, item=None, cli_proc_rate = 10000, cli_bw = 10000, do_timestamp = False, instructions="="):
+    def __init__(self,env, n=0, item=None, instructions=""):
         super().__init__(env, n, Item(name="temp_adjust", work=1, size=0), cli_proc_rate , cli_bw, do_timestamp)
         self.instructions=instructions
 
@@ -84,7 +84,7 @@ class shower_User(ContextUser, CoreRequestSource):
     def send_requests(self):
         while True:
             for s in self.showers:
-                if not s.current_temp==self.prefered_temperature:
+                if not s.current_temp==self.prefered_temperature: #TODO to about plus minus some range
                     self.adjust_temperature(s)
             yield self.env.timeout(.001)
 

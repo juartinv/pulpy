@@ -13,7 +13,7 @@ class Bird(Machine):
     """
     Represents bird in a 2d plain.
     """
-    def __init__(self, context, init_n = 0, intensity = 10, weights = None, name="Bird", x=None, y=None, direction=None, restricted_movement=None, behavior="f"):
+    def __init__(self, context, init_n = 0, weights = None, name="Bird", x=None, y=None, direction=None, restricted_movement=None, behavior="f"):
         Machine.__init__(self, name, context)
         self.dst=None
         self.sight=random.randint(400, 500) #How far away can two birds be when communicating
