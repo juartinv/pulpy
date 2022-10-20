@@ -7,7 +7,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-numpy = "^1.23.4"
+numpy = "^1.20"
 simpy = "^4.0.1"
 
 [tool.poetry.dev-dependencies]
