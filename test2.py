@@ -1,5 +1,6 @@
 from typing import List
 import simpy
+from pulpy.interfaces import DefaultContextUser
 from pulpy.machines import Machine
 from pulpy.system import Context, Monitor, ProbabilityMap, RequestSource, build_catalog, Catalog
 
@@ -17,6 +18,7 @@ monitor : Monitor = Monitor(env)
 
 # put them together
 context = Context(env,monitor,catalog)
+DefaultContextUser.set_default_context(context)
 
 
 # *** CREATE THE ACTUATORS OF THE SCENARIO ***

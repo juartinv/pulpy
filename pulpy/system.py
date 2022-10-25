@@ -47,12 +47,13 @@ class Context(object):
         self.monitor = monitor
         self.catalog = catalog
 
-class CoreRequestSource(object):
+class CoreRequestSource(DefaultContextUser):
     """
     Parent class of all Request Sources.
     generates and sends requests.
     """
     def __init__(self, init_n: int = 0):
+        super().__init__()
         self.n = init_n   # request counter
 
     def send_request(self, dst: CoreMachine, request: Request):
@@ -108,13 +109,12 @@ class RequestSource(CoreRequestSource):
             self.send_request(dst, new_request)
 
 
-class Source(ContextUser, RequestSource):
+class Source(RequestSource):
     """
      Creates and emits requests
      """
     def __init__(self, context: Context, init_n: int = 0, intensity: int = 10, weights: Optional[List|Dict|np.ndarray] = None):
-        ContextUser.__init__(self, context)
-        RequestSource.__init__(self, init_n = init_n)
+        super().__init__(init_n = init_n)
         prob_map = ProbabilityMap(self.catalog)
         if not weights:
             prob_map.generate_weights()
@@ -124,14 +124,13 @@ class Source(ContextUser, RequestSource):
         self.update_probability_map(prob_map)
 
 
-class PeriodicSource(ContextUser, CoreRequestSource):
+class PeriodicSource(CoreRequestSource):
     """
      Creates and emits requests periodicly.
      (Every x time increments request y is made)
      """
     def __init__(self, context: Context, init_n: int = 0, intensity: int = 10, min_interval:int = 3, max_interval:int = 10, latest_start_time: int =5, verbose:bool=False):
-        ContextUser.__init__(self, context)
-        CoreRequestSource.__init__(self, init_n = init_n)
+        super().__init__(init_n = init_n)
         assert(min_interval< max_interval)
         self.dst=None
         self.max_interval=max_interval
