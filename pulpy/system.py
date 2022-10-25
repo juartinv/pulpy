@@ -1,9 +1,12 @@
+from __future__ import annotations
 import random
-import simpy
+from typing import Dict, List, Optional, Tuple
+from simpy import Environment
 import numpy as np
 from collections import OrderedDict
 from pulpy.fun import *
 from pulpy.interfaces import *
+from pulpy.machines import CoreMachine
 from pulpy.alloc import AllocationMap
 
 
@@ -33,13 +36,13 @@ def build_catalog(catalog_size, max_item_work = 10, max_item_size = 10):
 
 class Context(object):
     """
-    Generic container for common instances rquired by other objects.
+    Generic container for common instances required by other objects.
     Including:
         SimPy Environment (env)
         Monitor
         Catalog (Jobs of Resource Items)
     """
-    def __init__(self, env, monitor, catalog):
+    def __init__(self, env: Environment, monitor: Monitor, catalog: Catalog):
         self.env = env
         self.monitor = monitor
         self.catalog = catalog
@@ -49,14 +52,14 @@ class CoreRequestSource(object):
     Parent class of all Request Sources.
     generates and sends requests.
     """
-    def __init__(self, init_n = 0):
+    def __init__(self, init_n: int = 0):
         self.n = init_n   # request counter
 
-    def send_request(self, dst, request):
+    def send_request(self, dst: CoreMachine, request: Request):
         request.start()
         dst.add_request(request)
 
-    def generate_request(self, item):
+    def generate_request(self, item: Item) -> Request:
         # simple impementation
         self.n += 1
         new_req = Request(self.env, self.n, item)
@@ -66,19 +69,19 @@ class RequestSource(CoreRequestSource):
     """
     Sends requests according to given popularity map.
     """
-    def __init__(self,  init_n = 0, prob_map = None):
+    def __init__(self,  init_n: int = 0, prob_map: Optional[ProbabilityMap] = None):
         super().__init__(init_n)
         self.prob_map = None
         if prob_map:
             self.update_probability_map(prob_map)
         self.next_batch = []
 
-    def update_probability_map(self, prob_map):
+    def update_probability_map(self, prob_map: ProbabilityMap):
         self.prob_map = prob_map
         self.catalog = prob_map.catalog
         self.catalog_weights = prob_map.get_all_probabilities(as_list=True)
 
-    def generate_request(self):
+    def generate_request(self) -> Tuple[Item,float]:
         """
         This function is used to generate tuples (request, firing_time).
         """
@@ -98,7 +101,7 @@ class RequestSource(CoreRequestSource):
         new_req = super().generate_request(item)
         return (new_req, delta_t)
 
-    def send_requests(self, dst):
+    def send_requests(self, dst: CoreMachine):
         while True:
             new_request, delta_t = self.generate_request()
             yield self.env.timeout(delta_t)
@@ -109,7 +112,7 @@ class Source(ContextUser, RequestSource):
     """
      Creates and emits requests
      """
-    def __init__(self, context, init_n = 0, intensity = 10, weights = None):
+    def __init__(self, context: Context, init_n: int = 0, intensity: int = 10, weights: Optional[List|Dict|np.ndarray] = None):
         ContextUser.__init__(self, context)
         RequestSource.__init__(self, init_n = init_n)
         prob_map = ProbabilityMap(self.catalog)
@@ -126,7 +129,7 @@ class PeriodicSource(ContextUser, CoreRequestSource):
      Creates and emits requests periodicly.
      (Every x time increments request y is made)
      """
-    def __init__(self, context, init_n = 0, intensity = 10, min_interval=3, max_interval= 10, latest_start_time=5, verbose=False):
+    def __init__(self, context: Context, init_n: int = 0, intensity: int = 10, min_interval:int = 3, max_interval:int = 10, latest_start_time: int =5, verbose:bool=False):
         ContextUser.__init__(self, context)
         CoreRequestSource.__init__(self, init_n = init_n)
         assert(min_interval< max_interval)
@@ -136,12 +139,12 @@ class PeriodicSource(ContextUser, CoreRequestSource):
         self.latest_start_time=latest_start_time
         self.verbose=verbose
 
-    def send_request(self, dst, request):
+    def send_request(self, dst: CoreMachine, request: Request):
         new_req = self.generate_request(request)
         new_req.start()
         dst.add_request(new_req)
 
-    def send_requests(self, dst):
+    def send_requests(self, dst: CoreMachine):
         self.dst=dst
         for item in self.catalog.get_iterator():
             self.env.process(PeriodicRequest(item, self, start_time=random.randint(0,self.latest_start_time), interval=random.randint(self.min_interval,self.max_interval)).run())
@@ -177,7 +180,7 @@ class Monitor(Observer, object):
     """
     Observer Object used to monitor simulation.
     """
-    def __init__(self, env):
+    def __init__(self, env: Environment):
         self.env=env
         self.start_time=self.env.now
 
@@ -193,7 +196,7 @@ class Monitor(Observer, object):
         self.max_log_length = 100
         self.head = 0
 
-    def update(self, name, report):
+    def update(self, name, report:Report):
         assert isinstance(report,Report)
         assert isinstance(report.value, dict)
         for k,v in report.value.items():
