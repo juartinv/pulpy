@@ -1,6 +1,6 @@
 from __future__ import annotations
 import random
-from typing import TYPE_CHECKING, Any, Dict, Iterator, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, Iterator, List, Optional, Tuple, Union
 from simpy import Environment
 import numpy as np
 from collections import OrderedDict
@@ -113,7 +113,7 @@ class Source(RequestSource):
     """
      Creates and emits requests
      """
-    def __init__(self, context: Context, init_n: int = 0, intensity: int = 10, weights: Optional[List|Dict|np.ndarray] = None):
+    def __init__(self, context: Context, init_n: int = 0, intensity: int = 10, weights: Optional[Union[List,Dict,np.ndarray]] = None):
         super().__init__(init_n = init_n)
         prob_map = ProbabilityMap(self.catalog)
         if not weights:
@@ -223,7 +223,7 @@ class Monitor(Observer, object):
 
 class Report(Token):
     __slots__ = ["id", "type","value"]
-    def __init__(self, id, value: Dict[str,int|float] ):
+    def __init__(self, id, value: Dict[str,Union[int,float]] ):
         assert isinstance(value, dict)
         self.value = value
         super().__init__(id, type = "Report")
@@ -436,7 +436,7 @@ class ProbabilityMap(object):
             w = [1/l for _ in range(self.catalog.get_size())]
         self.allocate_weights(w)
 
-    def allocate_weights(self, weights: List|np.ndarray|Dict):
+    def allocate_weights(self, weights: Union[List,np.ndarray,Dict]):
         # Note: weights must be non increasing, non-negative values
 
         if isinstance(weights, list):
