@@ -1,14 +1,14 @@
 from __future__ import annotations
 import random
-from typing import Any, Dict, Iterator, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, Iterator, List, Optional, Tuple
 from simpy import Environment
 import numpy as np
 from collections import OrderedDict
 from pulpy.fun import *
 from pulpy.interfaces import *
-from pulpy.machines import CoreMachine
 from pulpy.alloc import AllocationMap
-
+if TYPE_CHECKING:
+    from pulpy.machines import CoreMachine
 
 #utils
 def build_job_catalog(catalog_size, max_item_work = 10):
