@@ -417,11 +417,13 @@ class ProbabilityMap(object):
     """
      This object augments a catalog by adding popularities.
      """
-    def __init__(self, catalog: Catalog):
+    def __init__(self, catalog: Catalog, autogenerate_weights = False):
         self.catalog = catalog
         self.map = OrderedDict()
         self.intensity = 1
         self.np_popularity = None
+        if autogenerate_weights:
+            self.generate_weights()
 
     def __iter__(self):
         return self.map.__iter__()
