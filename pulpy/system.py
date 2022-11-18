@@ -16,10 +16,10 @@ def build_job_catalog(catalog_size, max_item_work = 10):
     Initializes a catalog of potential jobs.
     Job catalog is the size of catalog_size
     Job names = {0, ...., catalog_size}
-    Job work random int between (1, max_item_work)
+    Job work random float between (1, max_item_work)
     """
     c = Catalog()
-    c.items = [Job(f"item_{name}", random.randint(1, max_item_work)) for name in range(catalog_size) ]
+    c.items = [Job(f"item_{name}", random.randint(1, max_item_work))*1.0 for name in range(catalog_size) ]
     return c
 
 def build_catalog(catalog_size, max_item_work = 10, max_item_size = 10):
@@ -27,11 +27,11 @@ def build_catalog(catalog_size, max_item_work = 10, max_item_size = 10):
     Initializes a catalog of potential resource items.
     Catalog is the size of catalog_size.
     names = {0, ...., catalog_size}
-    Item work random int between (1, max_item_work)
-    Item size random int between (1, max_item_size)
+    Item work random float between (1, max_item_work)
+    Item size random float between (1, max_item_size)
     """
     c = Catalog()
-    c.items = [Item(f"item_{name}", random.randint(1, max_item_work), random.randint(1, max_item_work)) for name in range(catalog_size) ]
+    c.items = [Item(f"item_{name}", random.randint(1, max_item_work)*1.0, random.randint(1, max_item_work))*1.0 for name in range(catalog_size) ]
     return c
 
 class Context(object):
@@ -65,6 +65,43 @@ class CoreRequestSource(DefaultContextUser):
         self.n += 1
         new_req = Request(self.env, self.n, item)
         return new_req
+
+class SimpleRequestSource(CoreRequestSource):
+    """
+    Sends (ad-hoc) requests according to given intensity.
+    """
+    def __init__(self,  init_n: int = 0, intensity: float = 1.0):
+        super().__init__(init_n)
+        self.prob_map = None
+        self.intensity = intensity
+        self.next_batch = []
+        self.candidates = ["example1.com", "example2.com", "example3.com", "example4.com","example5.com"]
+
+    def set_candidates(self, candidates):
+        self.candidates = candidates
+
+    def generate_request(self) -> Tuple[Item,float]:
+        """
+        This function is used to generate tuples (request, firing_time).
+        """
+        # just rewrite it to your convenience. Defaults to Poisson events
+
+        if not self.next_batch:
+            batch_size = 1000
+            r = random.choices(self.candidates, k=batch_size)
+            dt = [random.expovariate(self.intensity) for _ in range(batch_size)]
+            # FIXME!!! what if theres no prob_map ?
+            self.next_batch = list(zip(r,dt))
+
+        fqdn, delta_t  = self.next_batch.pop()
+        new_req = super().generate_request(Item(fqdn,0.0,0.0))
+        return (new_req, delta_t)
+
+    def send_requests(self, dst: CoreMachine):
+        while True:
+            new_request, delta_t = self.generate_request()
+            yield self.env.timeout(delta_t)
+            self.send_request(dst, new_request)
 
 class RequestSource(CoreRequestSource):
     """
@@ -113,7 +150,7 @@ class Source(RequestSource):
     """
      Creates and emits requests
      """
-    def __init__(self, context: Context, init_n: int = 0, intensity: int = 10, weights: Optional[Union[List,Dict,np.ndarray]] = None):
+    def __init__(self, context: Context, init_n: int = 0, intensity: float = 10.0, weights: Optional[Union[List,Dict,np.ndarray]] = None):
         super().__init__(init_n = init_n)
         prob_map = ProbabilityMap(self.catalog)
         if not weights:
@@ -129,7 +166,7 @@ class PeriodicSource(CoreRequestSource):
      Creates and emits requests periodicly.
      (Every x time increments request y is made)
      """
-    def __init__(self, context: Context, init_n: int = 0, intensity: int = 10, min_interval:int = 3, max_interval:int = 10, latest_start_time: int =5, verbose:bool=False):
+    def __init__(self, context: Context, init_n: int = 0, intensity: float = 10.0, min_interval:int = 3, max_interval:int = 10, latest_start_time: int =5, verbose:bool=False):
         super().__init__(init_n = init_n)
         assert(min_interval< max_interval)
         self.dst=None
@@ -161,7 +198,7 @@ class PeriodicRequest():
         self.interval=interval
         if self.source.verbose:
             print ("Starting periodic request for: ", self.item.name, " with start time ", self.start_time, " and interval of: ", self.interval)
-    
+
     def run(self):
         if self.source.dst==None:
             if self.source.verbose:
@@ -247,7 +284,7 @@ class Item(object):
     Object that can be requested by users.
     """
     __slots__ = ["name", "work", "size","life_cycle"]
-    def __init__(self, name, work: int, size: int, life_cycle:int=0):
+    def __init__(self, name, work: float, size: float, life_cycle:int=0):
         self.name = name
         self.work = work
         self.size = size
@@ -260,16 +297,16 @@ class Content(Item):
     """
      Content object (file) that can be requested by users.
      """
-    def __init__(self, name, size:int):
-        work = 0
+    def __init__(self, name, size: float):
+        work = 0.0
         super().__init__(name, work, size)
 
 class Job(Item):
     """
     Task to be executed, requested by users.
     """
-    def __init__(self, name, work: int):
-        size = 0
+    def __init__(self, name, work: float):
+        size = 0.0
         super().__init__(name, work, size)
 
 class Catalog(object):
@@ -300,7 +337,7 @@ class Catalog(object):
         for i in self.items:
             yield i
 
-    def get_map(self) -> Iterator[Tuple[Any,int]]:
+    def get_map(self) -> Iterator[Tuple[Any,float]]:
         for i in self.items:
             yield (i.name, i.work)
 
@@ -322,7 +359,7 @@ class Request(object):
     _FINISHED = 2
     _PAUSED = 3
 
-    def __init__(self,env: Environment, n: int, item: Item, cli_proc_rate: int = 10000, cli_bw: int = 10000, do_timestamp: bool = False):
+    def __init__(self,env: Environment, n: int, item: Item, cli_proc_rate: float = 10000.0, cli_bw: float = 10000.0, do_timestamp: bool = False):
         assert isinstance(item, Item)
         self.env = env
         self.item = item  #an Item object
@@ -419,7 +456,7 @@ class ProbabilityMap(object):
     def __init__(self, catalog: Catalog, autogenerate_weights = False):
         self.catalog = catalog
         self.map = OrderedDict()
-        self.intensity = 1
+        self.intensity = 1.0
         self.np_popularity = None
         if autogenerate_weights:
             self.generate_weights()
