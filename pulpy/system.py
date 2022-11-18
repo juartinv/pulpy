@@ -31,7 +31,7 @@ def build_catalog(catalog_size, max_item_work = 10, max_item_size = 10):
     Item size random float between (1, max_item_size)
     """
     c = Catalog()
-    c.items = [Item(f"item_{name}", random.randint(1, max_item_work)*1.0, random.randint(1, max_item_work))*1.0 for name in range(catalog_size) ]
+    c.items = [Item(f"item_{name}", random.randint(1, max_item_work)*1.0, random.randint(1, max_item_work)*1.0) for name in range(catalog_size) ]
     return c
 
 class Context(object):

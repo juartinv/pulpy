@@ -3,7 +3,7 @@ import simpy
 import random
 from pulpy.interfaces import DefaultContextUser
 from pulpy.machines import Machine, Router
-from pulpy.system import Context, Monitor, ProbabilityMap, RequestSource, build_catalog, Catalog
+from pulpy.system import Context, Monitor, ProbabilityMap, RequestSource, build_catalog, Catalog, SimpleRequestSource
 
 
 # *** SET UP THE CONTEXT ***
@@ -23,8 +23,8 @@ DefaultContextUser.set_default_context(context)
 
 class P4SwitchForDNS(Router):
 
-    def __init__(self, context, machines, name):
-        super().__init__(context, machines, name)
+    def __init__(self, name, context):
+        super().__init__(context, [], name)
         self.white_list = set()
         self.black_list = set()
         self.dns_servers = []
@@ -67,10 +67,12 @@ client.set_candidates(candidates)
 dns_server : Machine = Machine('DNS_SERVER',context=context)
 expert_server : Machine = Machine('EXP_SERVER',context=context)
 p4_switch = P4SwitchForDNS('P4Switch',context=context)
+p4_switch.dns_servers = [dns_server]
+p4_switch.expert_servers = [expert_server]
 
 
 # *** TELL THE ACTUATORS WHAT TO DO
-env.process(client.send_requests(server))
+env.process(client.send_requests(p4_switch))
 
 # *** START THE SIMULATION ***
 env.run(1000)
