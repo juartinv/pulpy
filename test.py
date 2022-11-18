@@ -26,6 +26,7 @@ def example_1():
     catalog = build_catalog(catalog_size)
     monitor = Monitor(env) # keeps metrics
     ctx = Context( env, monitor, catalog)
+    DefaultContextUser.set_default_context(ctx)
 
     # Create request processing machines
     machines = []

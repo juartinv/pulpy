@@ -16,6 +16,20 @@ class ContextUser(object):
         self.monitor=context.monitor
         self.catalog = context.catalog
 
+class DefaultContextUser(ContextUser):
+    """
+    A smart context user, automaticalli injecting a predefined default context.
+    """
+    default_context = None
+    
+    def __init__(self):
+        if DefaultContextUser.default_context == None:
+            raise Exception("Undefined default context. Call DefaultContextUser.set_default_context first.")
+        super().__init__(DefaultContextUser.default_context)
+
+    def set_default_context(context):
+        DefaultContextUser.default_context = context
+
 class Observer():
     """
     Implements Observer pattern. Abstract class.

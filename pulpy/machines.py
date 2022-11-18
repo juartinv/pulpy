@@ -3,14 +3,13 @@ import simpy
 from pulpy.system import *
 from pulpy.fun import *
 
-class CoreMachine(ContextUser, CoreRequestSource, object):
+class CoreMachine(CoreRequestSource):
     """
     Parent class of all machines.
     Machines can be a variety of abstracted distributed entities.
     """
     def __init__(self,context):
-        ContextUser.__init__(self, context)
-        CoreRequestSource.__init__(self)
+        super().__init__(self)
         self.working_set = []
         self.last_visit  = 0
         self.next_event = None
